@@ -1,5 +1,6 @@
 package source;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -37,8 +38,23 @@ public class Connector {
 			
 		}
 		
-		
-		
 	}
+	
+	public void sendName(){
+		
+		try{
+			
+			sendData = clientName.getBytes("UTF-8");
+			sendPacket.setData(sendData);
+			sendPacket.setLength(sendData.length);
+			clientSocket.send(sendPacket);
+		}
+		catch(IOException e){
+			
+			System.out.println("Error sending Client's name to server");
+		}
+	}
+	
+	//public 
 	
 }
