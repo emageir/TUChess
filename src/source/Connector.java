@@ -34,7 +34,7 @@ public class Connector {
 		}
 		catch(SocketException | UnknownHostException e){
 			
-			System.out.println("Error establishing connection with the server.");
+			System.out.println(clientName + ":Error establishing connection with the server.");
 			
 		}
 		
@@ -51,10 +51,28 @@ public class Connector {
 		}
 		catch(IOException e){
 			
-			System.out.println("Error sending Client's name to server");
+			System.out.println(clientName + ":Error sending client's name to server");
 		}
 	}
 	
-	//public 
+	public String receiveMessages(){
+		
+		String receivedMsg = null;
+		
+		try{
+			
+			clientSocket.receive(receivePacket);
+			
+			receivedMsg = new String(receivePacket.getData(), 0, receivePacket.getLength(), "UTF-8");
+			System.out.println(clientName + ": Received message from server: " + receivedMsg);
+			
+		}
+		catch(IOException e){
+			
+			System.out.println(clientName + ":Error trying to receive message from server");
+		}
+		
+		return(receivedMsg);
+	}
 	
 }
