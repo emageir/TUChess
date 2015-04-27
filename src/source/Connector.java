@@ -34,7 +34,7 @@ public class Connector {
 		}
 		catch(SocketException | UnknownHostException e){
 			
-			System.out.println(clientName + ":Error establishing connection with the server.");
+			System.out.println(clientName + ": Error establishing connection with the server.");
 			
 		}
 		
@@ -51,7 +51,7 @@ public class Connector {
 		}
 		catch(IOException e){
 			
-			System.out.println(clientName + ":Error sending client's name to server");
+			System.out.println(clientName + ": Error sending client's name to server");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class Connector {
 		}
 		catch(IOException e){
 			
-			System.out.println(clientName + ":Error trying to receive message from server");
+			System.out.println(clientName + ": Error trying to receive message from server");
 		}
 		
 		return(receivedMsg);
