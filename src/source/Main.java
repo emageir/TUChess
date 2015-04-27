@@ -9,7 +9,7 @@ public class Main {
 		String receivedData;
 		char playerColor; //w-lefka, b-mavra
 		boolean gotColor = false;
-		String playerName = "Chesster";
+		String playerName = "GrandMaster Flash";
 		
 		//Dhmiourgoume object gia th syndesh
 		Connector conn = new Connector(9876, 200, playerName);
