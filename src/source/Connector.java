@@ -75,4 +75,19 @@ public class Connector {
 		return(receivedMsg);
 	}
 	
+	public void sendMessages(String str){
+		
+		try{
+			
+			sendData = str.getBytes("UTF-8");
+			sendPacket.setData(sendData);
+			sendPacket.setLength(sendData.length);
+			clientSocket.send(sendPacket);
+		}
+		catch(IOException e){
+			
+			System.out.println(clientName + ": Error sending move to server");
+		}
+	}
+	
 }
