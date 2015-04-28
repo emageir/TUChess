@@ -17,6 +17,8 @@ public class Main {
 		//Dhmiourgoume object gia th syndesh
 		Connector conn = new Connector(9876, 200, playerName);
 		
+		World world = new World();
+		
 		//Stelnoume to onoma sto server
 		conn.sendName();
 		
@@ -39,11 +41,13 @@ public class Main {
 			}
 			else if (gotColor){
 				
-				//world.setMyColor(playerColor);
+				world.setMyColor(playerColor);
 				
 				if(receivedData.substring(0, 2).compareTo("GB") == 0 && playerColor == 0){
 					
-					//world.selectAction();
+					String action = world.selectAction();
+					System.out.println(action);
+					conn.sendMessages(action);
 				}
 				else if(receivedData.substring(0, 2).compareTo("GE") == 0){
 					
@@ -103,6 +107,7 @@ public class Main {
 					{
 						
 						String action = world.selectAction();
+						System.out.println(action);
 						conn.sendMessages(action);		
 					}
 					else
