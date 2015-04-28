@@ -105,7 +105,12 @@ public class Main {
 					
 					if(nextPlayer==playerColor)
 					{
-						
+						try {
+							Thread.sleep(delay);
+						} catch (InterruptedException e) {
+
+							System.out.println(playerName + ": Error trying to sleep");
+						}
 						String action = world.selectAction();
 						System.out.println(action);
 						conn.sendMessages(action);		
