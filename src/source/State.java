@@ -95,7 +95,7 @@ public class State {
 	}
 
 
-	public int getScoreWhite() {
+	public int getScoreWhite() { 
 		return scoreWhite;
 	}
 
