@@ -17,8 +17,8 @@ public class State {
 		this.lastPlayed=lastPlayed;
 		this.lastMove=lastMove;
 		
-		//setScoreWhite();
-		//setScoreBlack();
+		setScoreWhite(father,lastPlayed,lastMove);
+		setScoreBlack(father,lastPlayed,lastMove);
 	}
 	
 	//public State(){}///gia to arxiko state
@@ -41,24 +41,59 @@ public class State {
 			}
 			
 			if(father.getBoard()[lastMove[2]][lastMove[3]].equals("BP")){
+				sc_incr+=1;
+			}
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BR")){
 				sc_incr+=3;
 			}
-			
-			
-			
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BK")){
+				sc_incr+=10;
+			}
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
+				sc_incr+=0.8;
+			}	
 			
 		}
 		
 		scoreWhite= father_score+sc_incr;
 		
-		
 	}
 	
-	public void setScoreBlack(State father,int lastPlayed,int LastMove){
+	public void setScoreBlack(State father,int lastPlayed,int[] lastMove){
+		
+		int father_score=father.getScoreBlack();
+		int sc_incr=0;
+		
+		if (lastPlayed==1){
+			//score++
+			
+			if(father.getBoard()[lastMove[0]][lastMove[1]].charAt(1)=='P'){
+				
+				if(board[lastMove[2]][lastMove[3]].equals(" "))
+				{
+					sc_incr++;
+				}
+			}
+			
+			if(father.getBoard()[lastMove[2]][lastMove[3]].equals("WP")){
+				sc_incr+=1;
+			}
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("WR")){
+				sc_incr+=3;
+			}
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("WK")){
+				sc_incr+=10;
+			}
+			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
+				sc_incr+=0.8;
+			}	
+			
+		}
+		
+		scoreBlack= father_score+sc_incr;
 		
 	}
-	
-	
+
 
 	public int getScoreWhite() {
 		return scoreWhite;
