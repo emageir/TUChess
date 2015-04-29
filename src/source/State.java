@@ -1,5 +1,7 @@
 package source;
 
+import java.util.ArrayList;
+
 public class State {
 	
 	private String[][] board;
@@ -7,7 +9,7 @@ public class State {
 	private int scoreBlack=0;
 	private int lastPlayed=1;/// antistoixa me to color. arxikopoieitai sto 1 giati prwtos paizei o white
 	private int[] lastMove;
-	
+	private ArrayList<State> children = null;
 	private State father;
 	
 	
@@ -19,6 +21,9 @@ public class State {
 		
 		setScoreWhite(father,lastPlayed,lastMove);
 		setScoreBlack(father,lastPlayed,lastMove);
+
+		this.children = new ArrayList<State>();
+
 	}
 	
 	//public State(){}///gia to arxiko state
@@ -112,6 +117,10 @@ public class State {
 		return lastPlayed;
 	}
 	
+	public ArrayList<State> getChildren(){
+		
+		return children;
+	}
 	
 	public int evaluate(State board){
 		int value=0;

@@ -15,7 +15,7 @@ public class World
 	private int nBranches = 0;
 	private int noPrize = 9;
 	private State curr_state = null;
-	private State thebeginning = null;
+	private State pointer = null;
 	
 	public World()
 	{
@@ -103,9 +103,10 @@ public class World
 		
 		ArrayList<int[]> availableMoves;
 		
-		if(thebeginning == null){
+		if(pointer == null){
 			
-			thebeginning = curr_state;
+			availableMoves = whiteMoves(curr_state.getBoard());
+			
 			
 		}
 		
