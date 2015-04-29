@@ -73,7 +73,7 @@ public class World
 		for(int j=0; j<columns; j++)
 			board[rows/2][j] = "P";
 		
-		curr_state = new State(board, null, 1, null);
+		curr_state = new State(board, null, 1, null,myColor);
 		
 		availableMoves = new ArrayList<String>();
 	}
