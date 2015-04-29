@@ -6,7 +6,6 @@ import java.util.Random;
 
 public class World
 {
-	private String[][] board = null;
 	private int rows = 7;
 	private int columns = 5;
 	private int myColor = 0;
@@ -15,10 +14,12 @@ public class World
 	private int nTurns = 0;
 	private int nBranches = 0;
 	private int noPrize = 9;
+	private State curr_state = null;
+	private State thebeginning = null;
 	
 	public World()
 	{
-		board = new String[rows][columns];
+		String[][] board = new String[rows][columns];
 		
 		/* represent the board
 		
@@ -72,6 +73,8 @@ public class World
 		for(int j=0; j<columns; j++)
 			board[rows/2][j] = "P";
 		
+		curr_state = new State(board, null, 1, null);
+		
 		availableMoves = new ArrayList<String>();
 	}
 	
@@ -96,11 +99,26 @@ public class World
 		return this.selectRandomAction();
 	}
 	
-	private void whiteMoves()
+	public void createTree(){
+		
+		ArrayList<int[]> availableMoves;
+		
+		if(thebeginning == null){
+			
+			thebeginning = curr_state;
+			
+		}
+		
+		
+	}
+	
+	private ArrayList<int[]> whiteMoves(String[][] board)
 	{
 		String firstLetter = "";
 		String secondLetter = "";
-		String move = "";
+//		String move = "";
+		int[] move = new int[4];
+		ArrayList<int[]> availableMoves = new ArrayList<int[]>();
 				
 		for(int i=0; i<rows; i++)
 		{
@@ -121,8 +139,12 @@ public class World
 					if(i-1 == 0 && (Character.toString(board[i-1][j].charAt(0)).equals(" ") 
 							         || Character.toString(board[i-1][j].charAt(0)).equals("P")))
 					{
-						move = Integer.toString(i) + Integer.toString(j) + 
-						       Integer.toString(i-1) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//						       Integer.toString(i-1) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - 1;
+						move[3] = j;
 						
 						availableMoves.add(move);
 						continue;
@@ -133,8 +155,12 @@ public class World
 					
 					if(firstLetter.equals(" ") || firstLetter.equals("P"))
 					{
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i-1) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i-1) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - 1;
+						move[3] = j;
 						
 						availableMoves.add(move);
 					}
@@ -147,8 +173,12 @@ public class World
 						if(firstLetter.equals("W") || firstLetter.equals(" ") || firstLetter.equals("P"))
 							continue;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i-1) + Integer.toString(j-1);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i-1) + Integer.toString(j-1);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - 1;
+						move[3] = j - 1;
 						
 						availableMoves.add(move);
 					}
@@ -161,8 +191,12 @@ public class World
 						if(firstLetter.equals("W") || firstLetter.equals(" ") || firstLetter.equals("P"))
 							continue;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i-1) + Integer.toString(j+1);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i-1) + Integer.toString(j+1);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - 1;
+						move[3] = j + 1;
 						
 						availableMoves.add(move);
 					}
@@ -180,8 +214,12 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i-(k+1)) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i-(k+1)) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - (k + 1);
+						move[3] = j;
 						
 						availableMoves.add(move);
 						
@@ -201,8 +239,12 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i+(k+1)) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i+(k+1)) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + (k + 1);
+						move[3] = j;
 						
 						availableMoves.add(move);
 						
@@ -222,8 +264,12 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i) + Integer.toString(j-(k+1));
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i) + Integer.toString(j-(k+1));
+						move[0] = i;
+						move[1] = j;
+						move[2] = i;
+						move[3] = (j - (k + 1));
 						
 						availableMoves.add(move);
 						
@@ -243,8 +289,12 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i) + Integer.toString(j+(k+1));
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i) + Integer.toString(j+(k+1));
+						move[0] = i;
+						move[1] = j;
+						move[2] = i;
+						move[3] = (j + (k + 1));
 						
 						availableMoves.add(move);
 						
@@ -262,8 +312,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i-1) + Integer.toString(j);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i-1) + Integer.toString(j);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i - 1;
+							move[3] = j;
 								
 							availableMoves.add(move);	
 						}
@@ -276,8 +330,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i+1) + Integer.toString(j);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i+1) + Integer.toString(j);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i + 1;
+							move[3] = j;
 								
 							availableMoves.add(move);	
 						}
@@ -290,8 +348,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i) + Integer.toString(j-1);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i) + Integer.toString(j-1);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i;
+							move[3] = j - 1;
 								
 							availableMoves.add(move);	
 						}
@@ -304,8 +366,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i) + Integer.toString(j+1);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i) + Integer.toString(j+1);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i;
+							move[3] = j + 1;
 								
 							availableMoves.add(move);	
 						}
@@ -313,13 +379,17 @@ public class World
 				}			
 			}	
 		}
+		
+		return(availableMoves);
 	}
 	
-	private void blackMoves()
+	private ArrayList<int[]> blackMoves(String board[][])
 	{
 		String firstLetter = "";
 		String secondLetter = "";
-		String move = "";
+		//String move = "";
+		int[] move = new int[4];
+		ArrayList<int[]> availableMoves = new ArrayList<int[]>();
 				
 		for(int i=0; i<rows; i++)
 		{
@@ -340,8 +410,12 @@ public class World
 					if(i+1 == rows-1 && (Character.toString(board[i+1][j].charAt(0)).equals(" ")
 										  || Character.toString(board[i+1][j].charAt(0)).equals("P")))
 					{
-						move = Integer.toString(i) + Integer.toString(j) + 
-						       Integer.toString(i+1) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//						       Integer.toString(i+1) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + 1;
+						move[3] = j;
 						
 						availableMoves.add(move);
 						continue;
@@ -352,8 +426,12 @@ public class World
 					
 					if(firstLetter.equals(" ") || firstLetter.equals("P"))
 					{
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i+1) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i+1) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + 1;
+						move[3] = j;
 						
 						availableMoves.add(move);
 					}
@@ -366,8 +444,12 @@ public class World
 						if(firstLetter.equals("B") || firstLetter.equals(" ") || firstLetter.equals("P"))
 							continue;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i+1) + Integer.toString(j-1);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i+1) + Integer.toString(j-1);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + 1;
+						move[3] = j - 1;
 						
 						availableMoves.add(move);
 					}
@@ -380,8 +462,12 @@ public class World
 						if(firstLetter.equals("B") || firstLetter.equals(" ") || firstLetter.equals("P"))
 							continue;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i+1) + Integer.toString(j+1);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i+1) + Integer.toString(j+1);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + 1;
+						move[3] = j + 1;
 						
 						availableMoves.add(move);
 					}
@@ -399,8 +485,12 @@ public class World
 						if(firstLetter.equals("B"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i-(k+1)) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i-(k+1)) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i - (k + 1);
+						move[3] = j;
 						
 						availableMoves.add(move);
 						
@@ -420,8 +510,12 @@ public class World
 						if(firstLetter.equals("B"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i+(k+1)) + Integer.toString(j);
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i+(k+1)) + Integer.toString(j);
+						move[0] = i;
+						move[1] = j;
+						move[2] = i + (k + 1);
+						move[3] = j;
 						
 						availableMoves.add(move);
 						
@@ -441,8 +535,12 @@ public class World
 						if(firstLetter.equals("B"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i) + Integer.toString(j-(k+1));
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i) + Integer.toString(j-(k+1));
+						move[0] = i;
+						move[1] = j;
+						move[2] = i;
+						move[3] = j - (k + 1);
 						
 						availableMoves.add(move);
 						
@@ -462,8 +560,12 @@ public class World
 						if(firstLetter.equals("B"))
 							break;
 						
-						move = Integer.toString(i) + Integer.toString(j) + 
-							   Integer.toString(i) + Integer.toString(j+(k+1));
+//						move = Integer.toString(i) + Integer.toString(j) + 
+//							   Integer.toString(i) + Integer.toString(j+(k+1));
+						move[0] = i;
+						move[1] = j;
+						move[2] = i;
+						move[3] = j + (k + 1);
 						
 						availableMoves.add(move);
 						
@@ -481,8 +583,12 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i-1) + Integer.toString(j);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i-1) + Integer.toString(j);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i - 1;
+							move[3] = j;
 								
 							availableMoves.add(move);	
 						}
@@ -495,8 +601,12 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i+1) + Integer.toString(j);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i+1) + Integer.toString(j);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i + 1;
+							move[3] = j;
 								
 							availableMoves.add(move);	
 						}
@@ -509,8 +619,12 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i) + Integer.toString(j-1);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i) + Integer.toString(j-1);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i;
+							move[3] = j - 1;
 								
 							availableMoves.add(move);	
 						}
@@ -523,8 +637,12 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-							move = Integer.toString(i) + Integer.toString(j) + 
-								   Integer.toString(i) + Integer.toString(j+1);
+//							move = Integer.toString(i) + Integer.toString(j) + 
+//								   Integer.toString(i) + Integer.toString(j+1);
+							move[0] = i;
+							move[1] = j;
+							move[2] = i;
+							move[3] = j + 1;
 								
 							availableMoves.add(move);	
 						}
@@ -532,6 +650,8 @@ public class World
 				}			
 			}	
 		}
+		
+		return(availableMoves);
 	}
 	
 	private String selectRandomAction()
@@ -547,7 +667,7 @@ public class World
 		return nBranches / (double) nTurns;
 	}
 	
-	public void makeMove(int x1, int y1, int x2, int y2, int prizeX, int prizeY)
+	public String[][] makeMove(String[][] board, int x1, int y1, int x2, int y2)
 	{
 		String chesspart = Character.toString(board[x1][y1].charAt(1));
 		
@@ -569,9 +689,13 @@ public class World
 			board[x1][y1] = " ";
 		}
 		
-		// check if a prize has been added in the game
-		if(prizeX != noPrize)
-			board[prizeX][prizeY] = "P";
+		return board;
+		
+	}
+	
+	public void prizeAdded(int prizeX, int prizeY){
+		
+		curr_state.getBoard()[prizeX][prizeY] = "P";
 	}
 	
 }

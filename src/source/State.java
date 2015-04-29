@@ -28,6 +28,15 @@ public class State {
 	
 	public void setScoreBlack(){}
 	
+	public int getlastPlayed(){
+		
+		return lastPlayed;
+	}
+	
+	public String[][] getBoard(){
+		
+		return board;
+	}
 	
 	public int evaluate(State board){
 		int value=0;
