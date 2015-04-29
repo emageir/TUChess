@@ -573,6 +573,13 @@ public class World
 		if(prizeX != noPrize)
 			board[prizeX][prizeY] = "P";
 	}
+
+	public int getMyColor() {
+		return myColor;
+	}
+	
+	
+	
 	
 }
 
