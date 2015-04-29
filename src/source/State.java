@@ -23,7 +23,6 @@ public class State {
 		setScoreBlack(father,lastPlayed,lastMove);
 
 		this.children = new ArrayList<State>();
-
 	}
 	
 	//public State(){}///gia to arxiko state
