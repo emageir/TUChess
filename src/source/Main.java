@@ -86,11 +86,11 @@ public class Main {
 				{
 					// decode the rest of the message
 					int nextPlayer = Integer.parseInt(Character.toString(receivedData.charAt(1)));
-					
-					int x1 = Integer.parseInt(Character.toString(receivedData.charAt(2)));
-					int y1 = Integer.parseInt(Character.toString(receivedData.charAt(3)));
-					int x2 = Integer.parseInt(Character.toString(receivedData.charAt(4)));
-					int y2 = Integer.parseInt(Character.toString(receivedData.charAt(5)));
+					int[] moves = new int[4];
+					moves[0] = Integer.parseInt(Character.toString(receivedData.charAt(2)));
+					moves[1] = Integer.parseInt(Character.toString(receivedData.charAt(3)));
+					moves[2] = Integer.parseInt(Character.toString(receivedData.charAt(4)));
+					moves[3] = Integer.parseInt(Character.toString(receivedData.charAt(5)));
 					
 					int prizeX = Integer.parseInt(Character.toString(receivedData.charAt(6)));
 					int prizeY = Integer.parseInt(Character.toString(receivedData.charAt(7)));
@@ -101,7 +101,7 @@ public class Main {
 					scoreBlack = Integer.parseInt(Character.toString(receivedData.charAt(10)) 
 												  + Character.toString(receivedData.charAt(11)));
 					
-					world.makeMove(x1,y1,x2,y2,prizeX,prizeY);
+					world.makeMove(moves);
 					
 					if(nextPlayer==playerColor)
 					{

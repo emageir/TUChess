@@ -87,10 +87,10 @@ public class World
 	{
 		availableMoves = new ArrayList<String>();
 				
-		if(myColor == 0)		// I am the white player
-			this.whiteMoves();
-		else					// I am the black player
-			this.blackMoves();
+//		if(myColor == 0)		// I am the white player
+//			this.whiteMoves();
+//		else					// I am the black player
+//			this.blackMoves();
 		
 		// keeping track of the branch factor
 		nTurns++;
@@ -102,15 +102,31 @@ public class World
 	public void createTree(){
 		
 		ArrayList<int[]> availableMoves;
+		int i;
+		long startTime;
 		
 		if(pointer == null){
 			
 			availableMoves = whiteMoves(curr_state.getBoard());
 			
+			for(i = 0; i < availableMoves.size(); i++){
+				
+				State child = new State(makeMove(curr_state.getBoard(), availableMoves.get(i)), curr_state, nextPlayer(curr_state), availableMoves.get(i), myColor);
+				curr_state.getChildren().add(child);
+			}
 			
+			pointer = curr_state.getChildren().get(1);
 		}
 		
+		startTime = System.currentTimeMillis();
 		
+		while(true){
+			
+			if(System.currentTimeMillis() - startTime < 4000){
+				
+				
+			}
+		}
 	}
 	
 	private ArrayList<int[]> whiteMoves(String[][] board)
@@ -668,26 +684,28 @@ public class World
 		return nBranches / (double) nTurns;
 	}
 	
-	public String[][] makeMove(String[][] board, int x1, int y1, int x2, int y2)
+	
+	//int x1, int y1, int x2, int y2
+	public String[][] makeMove(String[][] board, int[] moves)
 	{
-		String chesspart = Character.toString(board[x1][y1].charAt(1));
+		String chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
 		
 		boolean pawnLastRow = false;
 		
 		// check if it is a move that has made a move to the last line
 		if(chesspart.equals("P"))
-			if( (x1==rows-2 && x2==rows-1) || (x1==1 && x2==0) )
+			if( (moves[0]==rows-2 && moves[2]==rows-1) || (moves[0]==1 && moves[2]==0) )
 			{
-				board[x2][y2] = " ";	// in case an opponent's chess part has just been captured
-				board[x1][y1] = " ";
+				board[moves[2]][moves[3]] = " ";	// in case an opponent's chess part has just been captured
+				board[moves[0]][moves[1]] = " ";
 				pawnLastRow = true;
 			}
 		
 		// otherwise
 		if(!pawnLastRow)
 		{
-			board[x2][y2] = board[x1][y1];
-			board[x1][y1] = " ";
+			board[moves[2]][moves[3]] = board[moves[0]][moves[2]];
+			board[moves[0]][moves[1]] = " ";
 		}
 		
 		return board;
@@ -703,7 +721,17 @@ public class World
 		return myColor;
 	}
 	
-	
+	public int nextPlayer(State state){
+		
+		if(state.getlastPlayed() == 0){
+			
+			return 1;
+		}
+		else{
+			
+			return 0;
+		}
+	}
 	
 	
 }
