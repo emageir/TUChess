@@ -698,6 +698,13 @@ public class World
 		
 		curr_state.getBoard()[prizeX][prizeY] = "P";
 	}
+
+	public int getMyColor() {
+		return myColor;
+	}
+	
+	
+	
 	
 }
 
