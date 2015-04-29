@@ -77,10 +77,6 @@ public class State {
 		return lastPlayed;
 	}
 	
-	public String[][] getBoard(){
-		
-		return board;
-	}
 	
 	public int evaluate(State board){
 		int value=0;
