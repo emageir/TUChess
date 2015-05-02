@@ -14,8 +14,9 @@ public class World
 	private int nTurns = 0;
 	private int nBranches = 0;
 	private int noPrize = 9;
-	private State curr_state = null;
-	private State pointer = null;
+	private State root = null;
+	ArrayList<State> curr_list = null;
+	ArrayList<State> fathers_list = null;
 	
 	public World()
 	{
@@ -73,7 +74,7 @@ public class World
 		for(int j=0; j<columns; j++)
 			board[rows/2][j] = "P";
 		
-		curr_state = new State(board, null, 1, null,myColor);
+		root = new State(board, null, 1, null,myColor);
 		
 		availableMoves = new ArrayList<String>();
 	}
@@ -102,20 +103,20 @@ public class World
 	public void createTree(){
 		
 		ArrayList<int[]> availableMoves;
-		int i;
+		int i, j, prev_play;
 		long startTime;
 		
-		if(pointer == null){
+		if(curr_list == null){
 			
-			availableMoves = whiteMoves(curr_state.getBoard());
+			availableMoves = whiteMoves(root.getBoard());
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
-				State child = new State(makeMove(curr_state.getBoard(), availableMoves.get(i)), curr_state, nextPlayer(curr_state), availableMoves.get(i), myColor);
-				curr_state.getChildren().add(child);
+				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor);
+				root.getChildren().add(child);
 			}
 			
-			pointer = curr_state.getChildren().get(1);
+			curr_list = root.getChildren();
 		}
 		
 		startTime = System.currentTimeMillis();
@@ -124,7 +125,43 @@ public class World
 			
 			if(System.currentTimeMillis() - startTime < 4000){
 				
+				prev_play = curr_list.get(1).getlastPlayed();
 				
+				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
+					
+					for(i = 0; i < curr_list.size(); i++){
+						
+						availableMoves = blackMoves(curr_list.get(i).getBoard());
+						
+						for(j = 0; j < availableMoves.size(); j++){
+							
+							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+							curr_list.get(i).getChildren().add(child);
+						}
+					}
+				}
+				else{//Prohgoumenws eixan paiksei ta mavra
+					
+					for(i = 0; i < curr_list.size(); i++){
+						
+						availableMoves = whiteMoves(curr_list.get(i).getBoard());
+						
+						for(j = 0; j < availableMoves.size(); j++){
+							
+							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+							curr_list.get(i).getChildren().add(child);
+						}
+					}
+				}
+				
+				//Dialegoume thn epomenh lista komvwn gia na prosthesoume paidia
+				//Apofasizoume an h epomenh lista einai sto idio vathos
+				//h ena epipedo pio katw
+				
+			}
+			else{
+				
+				break;
 			}
 		}
 	}
@@ -714,7 +751,7 @@ public class World
 	
 	public void prizeAdded(int prizeX, int prizeY){
 		
-		curr_state.getBoard()[prizeX][prizeY] = "P";
+		root.getBoard()[prizeX][prizeY] = "P";
 	}
 
 	public int getMyColor() {
