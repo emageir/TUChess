@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 public class State {
 	
+	private int rows = 7;
+	private int columns = 5;
+	
 	private String[][] board;
 	private int scoreWhite=0;
 	private int scoreBlack=0;
@@ -11,6 +14,7 @@ public class State {
 	private int[] lastMove;
 	private ArrayList<State> children = null;
 	private State father;
+	private int evaluation;
 	
 	
 	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor){
@@ -19,8 +23,22 @@ public class State {
 		this.lastPlayed=lastPlayed;
 		this.lastMove=lastMove;
 		
-		setScoreWhite(father,lastPlayed,lastMove);
-		setScoreBlack(father,lastPlayed,lastMove);
+		if(father==null){
+			scoreBlack=0;
+			scoreWhite=0;
+		}
+		else{
+			if (lastPlayed==0){
+			setScoreWhite(father,lastMove);
+			scoreBlack=father.getScoreBlack();
+			}
+			else{
+			setScoreBlack(father,lastMove);
+			scoreWhite=father.getScoreWhite();
+			}
+		}
+		
+		evaluation=evaluate(myColor);
 
 		this.children = new ArrayList<State>();
 	}
@@ -28,12 +46,11 @@ public class State {
 	//public State(){}///gia to arxiko state
 	
 	
-	public void setScoreWhite(State father,int lastPlayed,int[] lastMove){
+	public void setScoreWhite(State father,int[] lastMove){
 		
 		int father_score=father.getScoreWhite();
 		int sc_incr=0;
 		
-		if (lastPlayed==0){
 			//score++
 			
 			if(father.getBoard()[lastMove[0]][lastMove[1]].charAt(1)=='P'){
@@ -55,20 +72,17 @@ public class State {
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
-			}	
-			
-		}
+			}
 		
 		scoreWhite= father_score+sc_incr;
 		
 	}
 	
-	public void setScoreBlack(State father,int lastPlayed,int[] lastMove){
+	public void setScoreBlack(State father,int[] lastMove){
 		
 		int father_score=father.getScoreBlack();
 		int sc_incr=0;
 		
-		if (lastPlayed==1){
 			//score++
 			
 			if(father.getBoard()[lastMove[0]][lastMove[1]].charAt(1)=='P'){
@@ -91,8 +105,6 @@ public class State {
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
 			}	
-			
-		}
 		
 		scoreBlack= father_score+sc_incr;
 		
@@ -121,11 +133,36 @@ public class State {
 		return children;
 	}
 	
-	public int evaluate(State board){
-		int value=0;
+	
+	
+	public int evaluate(int myColor){//first simple evaluation
+		int value=0,i,j;
+		int blackPieces=0,whitePieces=0;
+		// count pieces
 		
+			for (i=0;i<rows;i++) {
+				for (j=0;j<columns;j++){
+					
+					if(board[i][j].charAt(0)=='B'){
+						blackPieces++;
+					}
+					else if(board[i][j].charAt(0)=='W'){
+						whitePieces++;
+					}
+					
+				}
+			}
+			
+			if (myColor==0){//whites perspective
+				value=Math.abs(scoreWhite-whitePieces)-Math.abs(scoreBlack-blackPieces);
+			}
+			else{//blacks perspective
+				value=Math.abs(scoreBlack-blackPieces)-Math.abs(scoreWhite-whitePieces);
+			}
 		return value;
 	}
+	
+	
 	
 	public State getFather(){
 		 return father;
