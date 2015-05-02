@@ -127,4 +127,8 @@ public class State {
 		return value;
 	}
 	
+	public State getFather(){
+		 return father;
+	}
+	
 }
