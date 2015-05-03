@@ -128,6 +128,8 @@ public class World
 				
 				prev_play = curr_list.get(1).getlastPlayed();
 				
+				treeDepth++;
+				
 				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
 					
 					for(i = 0; i < curr_list.size(); i++){
