@@ -1,6 +1,7 @@
 package source;
 
 import java.net.DatagramSocket;
+import java.util.Arrays;
 
 public class Main {
 	
@@ -13,6 +14,7 @@ public class Main {
 		boolean gotColor = false;
 		String playerName = "GrandMaster Flash";
 		int delay = 4000;
+		int[] moves = new int[4];
 		
 		//Dhmiourgoume object gia th syndesh
 		Connector conn = new Connector(9876, 200, playerName);
@@ -46,9 +48,10 @@ public class Main {
 				if(receivedData.substring(0, 2).compareTo("GB") == 0 && playerColor == 0){
 					
 					world.createTree();
-					//String action = world.selectAction();
-					//System.out.println(action);
-					//conn.sendMessages(action);
+					moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
+					String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
+					System.out.println(action);
+					conn.sendMessages(action);
 				}
 				else if(receivedData.substring(0, 2).compareTo("GE") == 0){
 					
@@ -87,7 +90,7 @@ public class Main {
 				{
 					// decode the rest of the message
 					int nextPlayer = Integer.parseInt(Character.toString(receivedData.charAt(1)));
-					int[] moves = new int[4];
+					
 					moves[0] = Integer.parseInt(Character.toString(receivedData.charAt(2)));
 					moves[1] = Integer.parseInt(Character.toString(receivedData.charAt(3)));
 					moves[2] = Integer.parseInt(Character.toString(receivedData.charAt(4)));

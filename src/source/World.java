@@ -202,6 +202,7 @@ public class World
 			{ move=root.getChildren().get(i).getlastMove(); }
 		}
 		
+		changeRoot(move);
 		return move;
 	}
 	
@@ -238,7 +239,7 @@ public class World
 		
 	}
 	
-	public void opponentMove(int[] move){
+	public void changeRoot(int[] move){
 		
 		int i;
 		
