@@ -98,7 +98,8 @@ public class World
 		nTurns++;
 		nBranches += availableMoves.size();
 		
-		return this.selectRandomAction();
+		//return this.selectRandomAction();
+		return null;
 	}
 	
 	public void createTree(){
@@ -120,15 +121,16 @@ public class World
 			curr_list = root.getChildren();
 		}
 		
-		startTime = System.currentTimeMillis();
+//		startTime = System.currentTimeMillis();
 		
 		while(true){
 			
-			if(System.currentTimeMillis() - startTime < 4000){
+//			if(System.currentTimeMillis() - startTime < 4000){
 				
 				prev_play = curr_list.get(1).getlastPlayed();
 				
 				treeDepth++;
+				System.out.println("Depth: " + treeDepth + ".");
 				
 				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
 					
@@ -172,11 +174,11 @@ public class World
 						curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
 					}
 				}
-			}
-			else{
+//			}
+//			else{
 				
-				break;
-			}
+//				break;
+//			}
 		}
 	}
 	
@@ -742,24 +744,34 @@ public class World
 		String chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
 		
 		boolean pawnLastRow = false;
+		String[][] newBoard = new String[rows][columns];
+		int i, j;
+		
+		for(i = 0; i < rows; i++){
+			
+			for(j = 0; j < columns; j++){
+				
+				newBoard[i][j] = board[i][j];
+			}
+		}
 		
 		// check if it is a move that has made a move to the last line
 		if(chesspart.equals("P"))
 			if( (moves[0]==rows-2 && moves[2]==rows-1) || (moves[0]==1 && moves[2]==0) )
 			{
-				board[moves[2]][moves[3]] = " ";	// in case an opponent's chess part has just been captured
-				board[moves[0]][moves[1]] = " ";
+				newBoard[moves[2]][moves[3]] = " ";	// in case an opponent's chess part has just been captured
+				newBoard[moves[0]][moves[1]] = " ";
 				pawnLastRow = true;
 			}
 		
 		// otherwise
 		if(!pawnLastRow)
 		{
-			board[moves[2]][moves[3]] = board[moves[0]][moves[2]];
-			board[moves[0]][moves[1]] = " ";
+			newBoard[moves[2]][moves[3]] = board[moves[0]][moves[2]];
+			newBoard[moves[0]][moves[1]] = " ";
 		}
 		
-		return board;
+		return newBoard;
 		
 	}
 	

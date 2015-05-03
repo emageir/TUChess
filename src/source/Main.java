@@ -45,9 +45,10 @@ public class Main {
 				
 				if(receivedData.substring(0, 2).compareTo("GB") == 0 && playerColor == 0){
 					
-					String action = world.selectAction();
-					System.out.println(action);
-					conn.sendMessages(action);
+					world.createTree();
+					//String action = world.selectAction();
+					//System.out.println(action);
+					//conn.sendMessages(action);
 				}
 				else if(receivedData.substring(0, 2).compareTo("GE") == 0){
 					
@@ -101,7 +102,7 @@ public class Main {
 					scoreBlack = Integer.parseInt(Character.toString(receivedData.charAt(10)) 
 												  + Character.toString(receivedData.charAt(11)));
 					
-					world.makeMove(moves);
+					world.createTree();
 					
 					if(nextPlayer==playerColor)
 					{
