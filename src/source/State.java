@@ -62,7 +62,11 @@ public class State {
 			for (j=0;j<columns;j++){
 				if(board[i][j].equals("WK")) Wking=true;
 				else if(board[i][j].equals("BK")) Bking=true;
-				else if (board[i][j].charAt(1)=='R'||board[i][j].charAt(1)=='P')OnlyKings=false;
+				//else if (board[i][j].charAt(1)=='R'||board[i][j].charAt(1)=='P')OnlyKings=false;
+				else if(board[i][j].compareTo(" ") != 0 && board[i][j].compareTo("P") != 0){
+					
+					OnlyKings = false;
+				}
 			}
 		}
 		
