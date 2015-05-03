@@ -208,10 +208,7 @@ public class World
 			for(i=0;i<node.getChildren().size();i++){
 				
 				val=MiniMaxing(node.getChildren().get(i),false);
-				if (val>bestVal) {
-					bestVal=val;
-					node.setMinmaxValue(bestVal);
-				}	
+				if (val>bestVal)bestVal=val;	
 			}
 			
 		}
@@ -222,13 +219,11 @@ public class World
 			for(i=0;i<node.getChildren().size();i++){
 				
 				val=MiniMaxing(node.getChildren().get(i),true);
-				if (val<bestVal) {
-					bestVal=val;
-					node.setMinmaxValue(bestVal);
-				}	
+				if (val<bestVal)  bestVal=val;
 			}
 		}
 		
+		node.setMinmaxValue(bestVal);
 		return bestVal;
 		
 	}
