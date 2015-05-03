@@ -15,8 +15,17 @@ public class State {
 	private ArrayList<State> children = null;
 	private State father;
 	private int evaluation;
+	private int minmaxValue;
 	
 	
+	public int getMinmaxValue() {
+		return minmaxValue;
+	}
+
+	public void setMinmaxValue(int minmaxValue) {
+		this.minmaxValue = minmaxValue;
+	}
+
 	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor){
 		this.board=board;
 		this.father=father;
@@ -44,6 +53,23 @@ public class State {
 	}
 	
 	//public State(){}///gia to arxiko state
+	
+	public boolean isTerminal(){//elegxei an ayto to state einai teliko state paixnidiou.diladi an leipei 
+		int i,j; 				//kapoios  apo tous 2 vasiliades h an exoun meinei monoi tous sto board
+		boolean Wking=false,Bking=false,OnlyKings=true;
+		
+		for (i=0;i<rows;i++) {
+			for (j=0;j<columns;j++){
+				if(board[i][j].equals("WK")) Wking=true;
+				else if(board[i][j].equals("BK")) Bking=true;
+				else if (board[i][j].charAt(1)=='R'||board[i][j].charAt(1)=='P')OnlyKings=false;
+			}
+		}
+		
+		if(Wking==false||Bking==false|| OnlyKings==true) return true; // synthikes termatismou
+		else return false;
+	}
+				
 	
 	
 	public void setScoreWhite(State father,int[] lastMove){
@@ -167,5 +193,15 @@ public class State {
 	public State getFather(){
 		 return father;
 	}
+
+	public int[] getlastMove() {
+		return lastMove;
+	}
+
+	public int getEvaluation() {
+		return evaluation;
+	}
+	
+	
 	
 }

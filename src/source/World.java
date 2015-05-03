@@ -182,7 +182,57 @@ public class World
 		}
 	}
 	
-	private ArrayList<int[]> whiteMoves(String[][] board)
+	private int[] selectMinimaxMove(State root){
+		int[] move = null;
+		int value;
+		int i;
+		
+		value=MiniMaxing(root,true);
+		
+		for(i=0;i<root.getChildren().size();i++){
+			if(root.getChildren().get(i).getMinmaxValue()==value)
+			{ move=root.getChildren().get(i).getlastMove(); }
+		}
+		
+		return move;
+	}
+	
+	private int MiniMaxing(State node,boolean MaximizingPlayer){
+		int val=0;
+		int bestVal=0;
+		int i=0;
+		
+		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		
+		if (MaximizingPlayer){
+			bestVal=-500;// praktika meiwn apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(node.getChildren().get(i),false);
+				if (val>bestVal)bestVal=val;	
+			}
+			
+		}
+		else
+		{
+			bestVal=500;// praktika apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(node.getChildren().get(i),true);
+				if (val<bestVal)  bestVal=val;
+			}
+		}
+		
+		node.setMinmaxValue(bestVal);
+		return bestVal;
+		
+	}
+	
+	
+	
+ 	private ArrayList<int[]> whiteMoves(String[][] board)
 	{
 		String firstLetter = "";
 		String secondLetter = "";
