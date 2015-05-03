@@ -183,7 +183,7 @@ public class World
 		}
 	}
 	
-	public int[] selectMinimaxMove(State root){
+	public int[] selectMinimaxMove(){
 		int[] move = null;
 		int value;
 		int i;
@@ -206,7 +206,7 @@ public class World
 		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
 		
 		if (MaximizingPlayer){
-			bestVal=-500;// praktika meiwn apeiro
+			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
@@ -217,7 +217,7 @@ public class World
 		}
 		else
 		{
-			bestVal=500;// praktika apeiro
+			bestVal=Integer.MAX_VALUE;// praktika apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
