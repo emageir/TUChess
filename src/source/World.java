@@ -183,7 +183,7 @@ public class World
 		}
 	}
 	
-	private int[] selectMinimaxMove(State root){
+	public int[] selectMinimaxMove(State root){
 		int[] move = null;
 		int value;
 		int i;
