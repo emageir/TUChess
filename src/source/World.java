@@ -2,6 +2,7 @@ package source;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Arrays;
 
 
 public class World
@@ -230,7 +231,20 @@ public class World
 		
 	}
 	
-	
+	public void opponentMove(int[] move){
+		
+		int i;
+		
+		for(i = 0; i < root.getChildren().size(); i++){
+			
+			if(Arrays.equals(move, root.getChildren().get(i).getlastMove())){
+				
+				root = root.getChildren().get(i);
+				treeDepth--;
+				break;
+			}
+		}
+	}
 	
  	private ArrayList<int[]> whiteMoves(String[][] board)
 	{
@@ -793,7 +807,7 @@ public class World
 	public String[][] makeMove(String[][] board, int[] moves)
 	{
 		String chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
-		
+		System.out.println(Arrays.toString(moves));
 		boolean pawnLastRow = false;
 		String[][] newBoard = new String[rows][columns];
 		int i, j;
