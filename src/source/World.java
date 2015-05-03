@@ -14,6 +14,7 @@ public class World
 	private int nTurns = 0;
 	private int nBranches = 0;
 	private int noPrize = 9;
+	private int treeDepth = 0;
 	private State root = null;
 	ArrayList<State> curr_list = null;
 	ArrayList<State> fathers_list = null;
@@ -157,7 +158,18 @@ public class World
 				//Dialegoume thn epomenh lista komvwn gia na prosthesoume paidia
 				//Apofasizoume an h epomenh lista einai sto idio vathos
 				//h ena epipedo pio katw
-				
+				if(fathers_list == null){//Vriskomaste sto epipedo 1
+					
+					fathers_list = curr_list;
+					curr_list = curr_list.get(0).getChildren();
+				}
+				else{//Vriskomaste sto epipedo 2+
+					
+					if(fathers_list.indexOf(curr_list.get(0).getFather()) < (fathers_list.size() - 1)){//Den exoume oloklhrwsei th dhmiourgia paidiwn se ena epipedo
+						
+						curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
+					}
+				}
 			}
 			else{
 				
