@@ -121,11 +121,11 @@ public class World
 			curr_list = root.getChildren();
 		}
 		
-//		startTime = System.currentTimeMillis();
+		startTime = System.currentTimeMillis();
 		
 		while(true){
 			
-//			if(System.currentTimeMillis() - startTime < 4000){
+			if(System.currentTimeMillis() - startTime < 4000){
 				
 				prev_play = curr_list.get(1).getlastPlayed();
 				
@@ -174,11 +174,11 @@ public class World
 						curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
 					}
 				}
-//			}
-//			else{
+			}
+			else{
 				
-//				break;
-//			}
+				break;
+			}
 		}
 	}
 	
@@ -265,7 +265,7 @@ public class World
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j;
-						
+						//System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						continue;
 					}
@@ -281,7 +281,7 @@ public class World
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j;
-						
+						//System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}
 					
@@ -299,7 +299,7 @@ public class World
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j - 1;
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}
 					
@@ -317,7 +317,7 @@ public class World
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j + 1;
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}
 				}
@@ -340,7 +340,7 @@ public class World
 						move[1] = j;
 						move[2] = i - (k + 1);
 						move[3] = j;
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -365,7 +365,7 @@ public class World
 						move[1] = j;
 						move[2] = i + (k + 1);
 						move[3] = j;
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -390,7 +390,7 @@ public class World
 						move[1] = j;
 						move[2] = i;
 						move[3] = (j - (k + 1));
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -415,7 +415,7 @@ public class World
 						move[1] = j;
 						move[2] = i;
 						move[3] = (j + (k + 1));
-						
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -438,7 +438,7 @@ public class World
 							move[1] = j;
 							move[2] = i - 1;
 							move[3] = j;
-								
+//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -456,7 +456,7 @@ public class World
 							move[1] = j;
 							move[2] = i + 1;
 							move[3] = j;
-								
+//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -474,7 +474,7 @@ public class World
 							move[1] = j;
 							move[2] = i;
 							move[3] = j - 1;
-								
+//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -492,7 +492,8 @@ public class World
 							move[1] = j;
 							move[2] = i;
 							move[3] = j + 1;
-								
+							
+//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -817,7 +818,7 @@ public class World
 		// otherwise
 		if(!pawnLastRow)
 		{
-			newBoard[moves[2]][moves[3]] = board[moves[0]][moves[2]];
+			newBoard[moves[2]][moves[3]] = board[moves[0]][moves[1]];
 			newBoard[moves[0]][moves[1]] = " ";
 		}
 		
