@@ -188,14 +188,9 @@ public class World
 		int value;
 		int i;
 		
-		if(root.getlastPlayed() == myColor){//Twra paizei o antipalos
+		
 			
-			value=MiniMaxing(root,false);
-		}
-		else{//Twra paizw egw
-			
-			value=MiniMaxing(root,true);
-		}
+		value=MiniMaxing(root,true);
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value)
