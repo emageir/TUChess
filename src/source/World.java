@@ -185,7 +185,7 @@ public class World
 		int value;
 		int i;
 		
-		value=MinMaxing(root,true);
+		value=MiniMaxing(root,true);
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value)
@@ -195,9 +195,42 @@ public class World
 		return move;
 	}
 	
-	private int MinMaxing(State node,boolean MaximizingPlayer){
-		int eval=0;
-		return eval;
+	private int MiniMaxing(State node,boolean MaximizingPlayer){
+		int val=0;
+		int bestVal=0;
+		int i=0;
+		
+		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		
+		if (MaximizingPlayer){
+			bestVal=-500;// praktika meiwn apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(node.getChildren().get(i),false);
+				if (val>bestVal) {
+					bestVal=val;
+					node.setMinmaxValue(bestVal);
+				}	
+			}
+			
+		}
+		else
+		{
+			bestVal=500;// praktika apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(node.getChildren().get(i),true);
+				if (val<bestVal) {
+					bestVal=val;
+					node.setMinmaxValue(bestVal);
+				}	
+			}
+		}
+		
+		return bestVal;
+		
 	}
 	
 	

@@ -197,6 +197,10 @@ public class State {
 	public int[] getlastMove() {
 		return lastMove;
 	}
+
+	public int getEvaluation() {
+		return evaluation;
+	}
 	
 	
 	
