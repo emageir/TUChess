@@ -15,8 +15,17 @@ public class State {
 	private ArrayList<State> children = null;
 	private State father;
 	private int evaluation;
+	private int minmaxValue;
 	
 	
+	public int getMinmaxValue() {
+		return minmaxValue;
+	}
+
+	public void setMinmaxValue(int minmaxValue) {
+		this.minmaxValue = minmaxValue;
+	}
+
 	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor){
 		this.board=board;
 		this.father=father;
@@ -184,5 +193,11 @@ public class State {
 	public State getFather(){
 		 return father;
 	}
+
+	public int[] getlastMove() {
+		return lastMove;
+	}
+	
+	
 	
 }

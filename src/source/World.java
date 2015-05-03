@@ -180,7 +180,29 @@ public class World
 		}
 	}
 	
-	private ArrayList<int[]> whiteMoves(String[][] board)
+	private int[] selectMinimaxMove(State root){
+		int[] move = null;
+		int value;
+		int i;
+		
+		value=MinMaxing(root,true);
+		
+		for(i=0;i<root.getChildren().size();i++){
+			if(root.getChildren().get(i).getMinmaxValue()==value)
+			{ move=root.getChildren().get(i).getlastMove(); }
+		}
+		
+		return move;
+	}
+	
+	private int MinMaxing(State node,boolean MaximizingPlayer){
+		int eval=0;
+		return eval;
+	}
+	
+	
+	
+ 	private ArrayList<int[]> whiteMoves(String[][] board)
 	{
 		String firstLetter = "";
 		String secondLetter = "";
