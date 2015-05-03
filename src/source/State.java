@@ -45,6 +45,23 @@ public class State {
 	
 	//public State(){}///gia to arxiko state
 	
+	public boolean isTerminal(){//elegxei an ayto to state einai teliko state paixnidiou.diladi an leipei 
+		int i,j; 				//kapoios  apo tous 2 vasiliades h an exoun meinei monoi tous sto board
+		boolean Wking=false,Bking=false,OnlyKings=true;
+		
+		for (i=0;i<rows;i++) {
+			for (j=0;j<columns;j++){
+				if(board[i][j].equals("WK")) Wking=true;
+				else if(board[i][j].equals("BK")) Bking=true;
+				else if (board[i][j].charAt(1)=='R'||board[i][j].charAt(1)=='P')OnlyKings=false;
+			}
+		}
+		
+		if(Wking==false||Bking==false|| OnlyKings==true) return true; // synthikes termatismou
+		else return false;
+	}
+				
+	
 	
 	public void setScoreWhite(State father,int[] lastMove){
 		
