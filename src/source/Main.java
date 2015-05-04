@@ -115,6 +115,7 @@ public class Main {
 					if(prizeX != 9){//Emfanisthke dwro
 						
 						world.prizeAdded(prizeX, prizeY);
+						world.createTree();
 					}
 					
 					if(nextPlayer==playerColor)//Paizoume emeis
