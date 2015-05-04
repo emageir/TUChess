@@ -234,6 +234,49 @@ public class World
 		
 	}
 	
+	private int abPrunning(State node,boolean MaximizingPlayer,int a, int b){
+		int val=0;
+		int i=0;
+		
+		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (MaximizingPlayer){
+			
+			val=Integer.MIN_VALUE;// praktika meiwn apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b));
+				a=Math.max(a, val);
+				if (b<=a) break;
+			}
+		}
+		else{
+			val=Integer.MAX_VALUE;// praktika apeiro
+
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=Math.min(val,abPrunning(node.getChildren().get(i),true,a,b));
+				b=Math.min(b,val);
+				if (b<=a) break;
+			}
+			
+		}
+		
+		node.setMinmaxValue(val);
+		return val;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void changeRoot(int[] move){
 		
 		int i;
