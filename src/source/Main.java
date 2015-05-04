@@ -112,9 +112,9 @@ public class Main {
 					scoreBlack = Integer.parseInt(Character.toString(receivedData.charAt(10)) 
 												  + Character.toString(receivedData.charAt(11)));
 					
-					world.createTree();
 					
-					if(nextPlayer==playerColor)
+					
+					if(nextPlayer==playerColor)//Paizoume emeis
 					{
 						world.createTree();
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
@@ -122,8 +122,9 @@ public class Main {
 						System.out.println(action);
 						conn.sendMessages(action);		
 					}
-					else
+					else//Paizei o antipalos
 					{
+						world.changeRoot(moves);
 						continue;
 					}				
 				}

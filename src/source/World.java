@@ -193,8 +193,6 @@ public class World
 		int[] move = null;
 		int value;
 		int i;
-		
-		
 			
 		value=MiniMaxing(root,true);
 		
