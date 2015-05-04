@@ -268,15 +268,6 @@ public class World
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void changeRoot(int[] move){
 		
 		int i;
