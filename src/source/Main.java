@@ -116,12 +116,6 @@ public class Main {
 					
 					if(nextPlayer==playerColor)
 					{
-						try {
-							Thread.sleep(delay);
-						} catch (InterruptedException e) {
-
-							System.out.println(playerName + ": Error trying to sleep");
-						}
 						world.createTree();
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
 						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
