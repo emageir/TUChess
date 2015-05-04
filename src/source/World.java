@@ -118,7 +118,7 @@ public class World
 				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor);
 				root.getChildren().add(child);
 			}
-			
+			availableMoves.clear();
 			curr_list = root.getChildren();
 		}
 		
@@ -144,6 +144,7 @@ public class World
 							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
 							curr_list.get(i).getChildren().add(child);
 						}
+						availableMoves.clear();
 					}
 				}
 				else{//Prohgoumenws eixan paiksei ta mavra
@@ -157,6 +158,7 @@ public class World
 							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
 							curr_list.get(i).getChildren().add(child);
 						}
+						availableMoves.clear();
 					}
 				}
 				
