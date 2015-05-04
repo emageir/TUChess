@@ -10,7 +10,7 @@ public class World
 	private int rows = 7;
 	private int columns = 5;
 	private int myColor = 0;
-	private ArrayList<String> availableMoves = null;
+	//private ArrayList<String> availableMoves = null;
 	private int rookBlocks = 2;		// rook can move towards <rookBlocks> blocks in any vertical or horizontal direction
 	private int nTurns = 0;
 	private int nBranches = 0;
@@ -78,7 +78,7 @@ public class World
 		
 		root = new State(board, null, 1, null,myColor);
 		
-		availableMoves = new ArrayList<String>();
+//		availableMoves = new ArrayList<String>();
 	}
 	
 	public void setMyColor(int myColor)
@@ -86,22 +86,22 @@ public class World
 		this.myColor = myColor;
 	}
 	
-	public String selectAction()
-	{
-		availableMoves = new ArrayList<String>();
-				
-//		if(myColor == 0)		// I am the white player
-//			this.whiteMoves();
-//		else					// I am the black player
-//			this.blackMoves();
-		
-		// keeping track of the branch factor
-		nTurns++;
-		nBranches += availableMoves.size();
-		
-		//return this.selectRandomAction();
-		return null;
-	}
+//	public String selectAction()
+//	{
+//		availableMoves = new ArrayList<String>();
+//				
+////		if(myColor == 0)		// I am the white player
+////			this.whiteMoves();
+////		else					// I am the black player
+////			this.blackMoves();
+//		
+//		// keeping track of the branch factor
+//		nTurns++;
+//		nBranches += availableMoves.size();
+//		
+//		//return this.selectRandomAction();
+//		return null;
+//	}
 	
 	public void createTree(){
 		
@@ -115,10 +115,11 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
+				System.out.println(Arrays.toString(availableMoves.get(i)));
 				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor);
 				root.getChildren().add(child);
 			}
-			
+			availableMoves.clear();
 			curr_list = root.getChildren();
 		}
 		
@@ -131,7 +132,7 @@ public class World
 				prev_play = curr_list.get(1).getlastPlayed();
 				
 				treeDepth++;
-				System.out.println("Depth: " + treeDepth + ".");
+				//System.out.println("Depth: " + treeDepth + ".");
 				
 				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
 					
@@ -144,6 +145,7 @@ public class World
 							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
 							curr_list.get(i).getChildren().add(child);
 						}
+						availableMoves.clear();
 					}
 				}
 				else{//Prohgoumenws eixan paiksei ta mavra
@@ -157,6 +159,7 @@ public class World
 							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
 							curr_list.get(i).getChildren().add(child);
 						}
+						availableMoves.clear();
 					}
 				}
 				
@@ -288,7 +291,7 @@ public class World
 		String firstLetter = "";
 		String secondLetter = "";
 //		String move = "";
-		int[] move = new int[4];
+		int[] move;
 		ArrayList<int[]> availableMoves = new ArrayList<int[]>();
 				
 		for(int i=0; i<rows; i++)
@@ -312,11 +315,12 @@ public class World
 					{
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //						       Integer.toString(i-1) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j;
-						//System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						continue;
 					}
@@ -328,11 +332,12 @@ public class World
 					{
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-1) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j;
-						//System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
+//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}
 					
@@ -346,6 +351,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-1) + Integer.toString(j-1);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
@@ -364,6 +370,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-1) + Integer.toString(j+1);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
@@ -387,6 +394,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-(k+1)) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - (k + 1);
@@ -412,6 +420,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+(k+1)) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + (k + 1);
@@ -437,6 +446,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i) + Integer.toString(j-(k+1));
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
@@ -462,6 +472,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i) + Integer.toString(j+(k+1));
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
@@ -485,6 +496,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i-1) + Integer.toString(j);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i - 1;
@@ -503,6 +515,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i+1) + Integer.toString(j);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i + 1;
@@ -521,6 +534,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i) + Integer.toString(j-1);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
@@ -539,6 +553,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i) + Integer.toString(j+1);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
@@ -551,7 +566,8 @@ public class World
 				}			
 			}	
 		}
-		
+		int i;
+//		for(i = 0; i < availableMoves.size(); i++){ System.out.println(Arrays.toString(availableMoves.get(i))); }
 		return(availableMoves);
 	}
 	
@@ -560,7 +576,7 @@ public class World
 		String firstLetter = "";
 		String secondLetter = "";
 		//String move = "";
-		int[] move = new int[4];
+		int[] move;
 		ArrayList<int[]> availableMoves = new ArrayList<int[]>();
 				
 		for(int i=0; i<rows; i++)
@@ -584,6 +600,7 @@ public class World
 					{
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //						       Integer.toString(i+1) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + 1;
@@ -600,6 +617,7 @@ public class World
 					{
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+1) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + 1;
@@ -618,6 +636,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+1) + Integer.toString(j-1);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + 1;
@@ -636,6 +655,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+1) + Integer.toString(j+1);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + 1;
@@ -659,6 +679,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-(k+1)) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - (k + 1);
@@ -684,6 +705,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+(k+1)) + Integer.toString(j);
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + (k + 1);
@@ -709,6 +731,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i) + Integer.toString(j-(k+1));
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
@@ -734,6 +757,7 @@ public class World
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i) + Integer.toString(j+(k+1));
+						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
@@ -757,6 +781,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i-1) + Integer.toString(j);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i - 1;
@@ -775,6 +800,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i+1) + Integer.toString(j);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i + 1;
@@ -793,6 +819,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i) + Integer.toString(j-1);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
@@ -811,6 +838,7 @@ public class World
 						{
 //							move = Integer.toString(i) + Integer.toString(j) + 
 //								   Integer.toString(i) + Integer.toString(j+1);
+							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
@@ -826,13 +854,13 @@ public class World
 		return(availableMoves);
 	}
 	
-	private String selectRandomAction()
-	{		
-		Random ran = new Random();
-		int x = ran.nextInt(availableMoves.size());
-		
-		return availableMoves.get(x);
-	}
+//	private String selectRandomAction()
+//	{		
+//		Random ran = new Random();
+//		int x = ran.nextInt(availableMoves.size());
+//		
+//		return availableMoves.get(x);
+//	}
 	
 	public double getAvgBFactor()
 	{
@@ -844,7 +872,7 @@ public class World
 	public String[][] makeMove(String[][] board, int[] moves)
 	{
 		String chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
-		System.out.println(Arrays.toString(moves));
+//		System.out.println(Arrays.toString(moves));
 		boolean pawnLastRow = false;
 		String[][] newBoard = new String[rows][columns];
 		int i, j;
