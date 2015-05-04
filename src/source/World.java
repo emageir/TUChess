@@ -9,7 +9,6 @@ public class World
 	private int rows = 7;
 	private int columns = 5;
 	private int myColor = 0;
-	//private ArrayList<String> availableMoves = null;
 	private int rookBlocks = 2;		// rook can move towards <rookBlocks> blocks in any vertical or horizontal direction
 	private int nTurns = 0;
 	private int nBranches = 0;
@@ -114,7 +113,6 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
-				System.out.println(Arrays.toString(availableMoves.get(i)));
 				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor);
 				root.getChildren().add(child);
 			}
@@ -130,8 +128,7 @@ public class World
 				
 				prev_play = curr_list.get(1).getlastPlayed();
 				
-				treeDepth++;
-				//System.out.println("Depth: " + treeDepth + ".");
+				System.out.println("Depth: " + treeDepth + ".");
 				
 				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
 					
@@ -169,12 +166,19 @@ public class World
 					
 					fathers_list = curr_list;
 					curr_list = curr_list.get(0).getChildren();
+					treeDepth++;
 				}
 				else{//Vriskomaste sto epipedo 2+
 					
 					if(fathers_list.indexOf(curr_list.get(0).getFather()) < (fathers_list.size() - 1)){//Den exoume oloklhrwsei th dhmiourgia paidiwn se ena epipedo
 						
 						curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
+					}
+					else{
+						
+						fathers_list = curr_list;
+						curr_list = curr_list.get(0).getChildren();
+						treeDepth++;
 					}
 				}
 			}
