@@ -112,7 +112,10 @@ public class Main {
 					scoreBlack = Integer.parseInt(Character.toString(receivedData.charAt(10)) 
 												  + Character.toString(receivedData.charAt(11)));
 					
-					
+					if(prizeX != 9){//Emfanisthke dwro
+						
+						world.prizeAdded(prizeX, prizeY);
+					}
 					
 					if(nextPlayer==playerColor)//Paizoume emeis
 					{
