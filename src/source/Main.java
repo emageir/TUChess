@@ -115,7 +115,9 @@ public class Main {
 
 							System.out.println(playerName + ": Error trying to sleep");
 						}
-						String action = world.selectAction();
+						world.createTree();
+						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
+						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
 						System.out.println(action);
 						conn.sendMessages(action);		
 					}
