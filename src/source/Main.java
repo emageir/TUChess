@@ -45,13 +45,20 @@ public class Main {
 				
 				world.setMyColor(playerColor);
 				
-				if(receivedData.substring(0, 2).compareTo("GB") == 0 && playerColor == 0){
+				if(receivedData.substring(0, 2).compareTo("GB") == 0){
 					
-					world.createTree();
-					moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
-					String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
-					System.out.println(action);
-					conn.sendMessages(action);
+					if(playerColor == 0){
+						
+						world.createTree();
+						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
+						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
+						System.out.println(action);
+						conn.sendMessages(action);
+					}
+					else{
+						
+						continue;
+					}
 				}
 				else if(receivedData.substring(0, 2).compareTo("GE") == 0){
 					
