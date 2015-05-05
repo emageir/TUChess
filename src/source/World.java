@@ -123,13 +123,25 @@ public class World
 			curr_list = root.getChildren();
 		}
 		
-		startTime = System.currentTimeMillis();
+//		startTime = System.currentTimeMillis();
 		
 		while(true){
-			
-			if(System.currentTimeMillis() - startTime < 4000){
-				
-				prev_play = curr_list.get(1).getlastPlayed();
+
+//			System.out.println("depth is " + treeDepth);
+//			if(System.currentTimeMillis() - startTime < 4000){
+				if(curr_list == null){
+					
+					System.out.println("curr is null");
+				}
+				else{
+					
+					//System.out.println(curr_list.size());
+				}
+				if(curr_list.isEmpty()){
+					
+					System.out.println("curr empty");
+				}
+				prev_play = curr_list.get(0).getlastPlayed();
 				
 //				System.out.println("Depth: " + treeDepth + ".");
 				
@@ -148,6 +160,29 @@ public class World
 							}
 							availableMoves.clear();
 						}
+						else{
+							
+							System.out.println("Found terminal");
+							for(int u = 0; u < rows; u++){
+								
+								for(j = 0; j < columns; j++){
+									
+									if(curr_list.get(i).getBoard()[u][j].compareTo(" ") == 0){
+										
+										System.out.print("-- ");
+									}
+									else if(curr_list.get(i).getBoard()[u][j].compareTo("P") == 0){
+										
+										System.out.print("P  ");
+									}
+									else{
+										
+										System.out.print(curr_list.get(i).getBoard()[u][j] + " ");
+									}
+								}
+								System.out.println();
+							}
+						}
 					}
 				}
 				else{//Prohgoumenws eixan paiksei ta mavra
@@ -165,8 +200,29 @@ public class World
 							}
 							availableMoves.clear();
 						}
-						
-						
+						else{
+							
+							System.out.println("Found terminal");
+							for(int u = 0; u < rows; u++){
+								
+								for(j = 0; j < columns; j++){
+									
+									if(curr_list.get(i).getBoard()[u][j].compareTo(" ") == 0){
+										
+										System.out.print("-- ");
+									}
+									else if(curr_list.get(i).getBoard()[u][j].compareTo("P") == 0){
+										
+										System.out.print("P  ");
+									}
+									else{
+										
+										System.out.print(curr_list.get(i).getBoard()[u][j] + " ");
+									}
+								}
+								System.out.println();
+							}
+						}
 					}
 				}
 				
@@ -183,21 +239,46 @@ public class World
 					
 					if(fathers_list.indexOf(curr_list.get(0).getFather()) < (fathers_list.size() - 1)){//Den exoume oloklhrwsei th dhmiourgia paidiwn se ena epipedo
 						
-						curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
+						for(i = 0; i < fathers_list.size(); i++){
+							
+							if(!fathers_list.get(i).isTerminal()){
+								
+								curr_list = fathers_list.get(fathers_list.indexOf(curr_list.get(0).getFather()) + 1).getChildren();
+								break;
+							}
+						}
 					}
 					else{
 						
-						fathers_list = curr_list;
-						curr_list = curr_list.get(0).getChildren();
-						treeDepth++;
+						outerloop:
+						for(i = 0; i < fathers_list.size(); i++){
+							
+							if(!fathers_list.get(i).isTerminal()){
+								
+								for(j = 0; j < fathers_list.get(i).getChildren().size(); j++){
+									
+									if(!fathers_list.get(i).getChildren().get(j).isTerminal()){
+										
+										fathers_list = curr_list;
+										curr_list = curr_list.get(0).getChildren();
+										treeDepth++;
+										break outerloop;
+									}
+									else{
+										
+										System.out.println("Skipped a terminal");
+									}
+								}
+							}
+						}
 					}
 				}
 			}
-			else{
-				
-				break;
-			}
-		}
+//			else{
+//				
+//				break;
+//			}
+//		}
 	}
 	
 	public int[] selectMinimaxMove(){
