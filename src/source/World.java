@@ -20,6 +20,7 @@ public class World
 	private State root = null;
 	ArrayList<State> curr_list = null;
 	ArrayList<State> fathers_list = null;
+	ArrayList<State> expand_list = new ArrayList<State>();
 	
 	public World()
 	{
@@ -78,6 +79,7 @@ public class World
 			board[rows/2][j] = "P";
 		
 		root = new State(board, null, 1, null,myColor);
+		expand_list.add(root);
 		
 //		availableMoves = new ArrayList<String>();
 	}
@@ -104,7 +106,7 @@ public class World
 //		return null;
 //	}
 	
-	public void createTree(){
+	public void ObsoletecreateTree(){
 		
 		ArrayList<int[]> availableMoves;
 		int i, j, prev_play;
@@ -281,25 +283,62 @@ public class World
 //		}
 	}
 	
+	public void createTree(){
+		
+		ArrayList<int[]> availableMoves;
+		int i, j;
+		State toBeExpanded;
+		
+		long time = System.currentTimeMillis();
+		
+		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < 4000)){
+			
+			toBeExpanded = expand_list.remove(0);
+			
+			if(toBeExpanded.getlastPlayed() == 0){
+				
+				availableMoves = blackMoves(toBeExpanded.getBoard());
+			}
+			else{
+				
+				availableMoves = whiteMoves(toBeExpanded.getBoard());
+			}
+			
+			for(i = 0; i < availableMoves.size(); i++){
+				
+				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor);
+				if(!child.isTerminal()){
+					
+					expand_list.add(child);
+				}
+			}
+		}
+		
+	}
+	
 	public int[] selectMinimaxMove(){
 		int[] move = null;
-		int value;
+		float value;
 		int i;
 			
 		value=MiniMaxing(root,true);
+		System.out.println("value = " + value + "\n" + root.getChildren().size());
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value)
 			{ move=root.getChildren().get(i).getlastMove(); }
 		}
 		System.out.print("My move: ");
+		if(move==null){
+			System.out.println("ALERT");
+		}
 		changeRoot(move);
 		return move;
 	}
 	
-	private int MiniMaxing(State node,boolean MaximizingPlayer){
-		int val=0;
-		int bestVal=0;
+	private float MiniMaxing(State node,boolean MaximizingPlayer){
+		float val=0;
+		float bestVal=0;
 		int i=0;
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
@@ -330,9 +369,9 @@ public class World
 		
 	}
 	
-	private int MiniMaxing(int depth,State node,boolean MaximizingPlayer){
-		int val=0;
-		int bestVal=0;
+	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer){
+		float val=0;
+		float bestVal=0;
 		int i=0;
 		
 		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
@@ -365,8 +404,8 @@ public class World
 	
 	
 	
-	private int abPrunning(State node,boolean MaximizingPlayer,int a, int b){
-		int val=0;
+	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b){
+		float val=0;
 		int i=0;
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
@@ -398,8 +437,8 @@ public class World
 	}
 
 	
-	private int abPrunning(int depth,State node,boolean MaximizingPlayer,int a, int b){
-		int val=0;
+	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
+		float val=0;
 		int i=0;
 		
 		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
@@ -436,12 +475,16 @@ public class World
 	public void changeRoot(int[] move){
 		
 		int i;
-		System.out.println(move.length);
+		if(move.equals(null)){
+			System.out.println("ALERT");
+		}
+//		System.out.println(move.length);
 		for(i = 0; i < root.getChildren().size(); i++){
 			
 			if(Arrays.equals(move, root.getChildren().get(i).getlastMove())){
 				System.out.println("Changed root for move " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 				root = root.getChildren().get(i);
+				root.removeFather();
 				treeDepth--;
 				return;
 			}
@@ -1063,9 +1106,10 @@ public class World
 	
 	public void prizeAdded(int prizeX, int prizeY){
 		
+		expand_list.clear();
 		root.getBoard()[prizeX][prizeY] = "P";
 		root.getChildren().clear();
-		curr_list = null;
+		expand_list.add(root);
 	}
 
 	public int getMyColor() {

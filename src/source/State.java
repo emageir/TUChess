@@ -8,22 +8,22 @@ public class State {
 	private int columns = 5;
 	
 	private String[][] board;
-	private int scoreWhite=0;
-	private int scoreBlack=0;
+	private float scoreWhite=0;
+	private float scoreBlack=0;
 	private int lastPlayed=1;/// antistoixa me to color. arxikopoieitai sto 1 giati prwtos paizei o white
 	private int[] lastMove;
 	private ArrayList<State> children = null;
 	private State father;
-	private int evaluation;
-	private int minmaxValue;
+	private float evaluation;
+	private float minmaxValue;
 	
 	
-	public int getMinmaxValue() {
+	public float getMinmaxValue() {
 		return minmaxValue;
 	}
 
-	public void setMinmaxValue(int minmaxValue) {
-		this.minmaxValue = minmaxValue;
+	public void setMinmaxValue(float bestVal) {
+		this.minmaxValue = bestVal;
 	}
 
 	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor){
@@ -78,7 +78,7 @@ public class State {
 	
 	public void setScoreWhite(State father,int[] lastMove){
 		
-		int father_score=father.getScoreWhite();
+		float father_score=father.getScoreWhite();
 		int sc_incr=0;
 		
 			//score++
@@ -88,20 +88,25 @@ public class State {
 				if(board[lastMove[2]][lastMove[3]].equals(" "))
 				{
 					sc_incr++;
+					System.out.println("Out of board");
 				}
 			}
 			
 			if(father.getBoard()[lastMove[2]][lastMove[3]].equals("BP")){
 				sc_incr+=1;
+				System.out.println("Killed pawn");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BR")){
 				sc_incr+=3;
+				System.out.println("Killed rook");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BK")){
 				sc_incr+=10;
+				System.out.println("Killed King");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
+				System.out.println("Got present on (" + lastMove[2] + "," + lastMove[3]);
 			}
 		
 		scoreWhite= father_score+sc_incr;
@@ -110,7 +115,7 @@ public class State {
 	
 	public void setScoreBlack(State father,int[] lastMove){
 		
-		int father_score=father.getScoreBlack();
+		float father_score=father.getScoreBlack();
 		int sc_incr=0;
 		
 			//score++
@@ -141,11 +146,11 @@ public class State {
 	}
 
 
-	public int getScoreWhite() { 
+	public float getScoreWhite() { 
 		return scoreWhite;
 	}
 
-	public int getScoreBlack() {
+	public float getScoreBlack() {
 		return scoreBlack;
 	}
 	
@@ -165,8 +170,9 @@ public class State {
 	
 	
 	
-	public int evaluate(int myColor){//first simple evaluation
-		int value=0,i,j;
+	public float evaluate(int myColor){//first simple evaluation
+		float value=0;
+		int i,j;
 		int blackPieces=0,whitePieces=0;
 		// count pieces
 		
@@ -202,10 +208,13 @@ public class State {
 		return lastMove;
 	}
 
-	public int getEvaluation() {
+	public float getEvaluation() {
 		return evaluation;
 	}
 	
-	
+	public void removeFather(){
+		
+		this.father = null;
+	}
 	
 }
