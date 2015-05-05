@@ -128,7 +128,7 @@ public class World
 				
 				prev_play = curr_list.get(1).getlastPlayed();
 				
-				System.out.println("Depth: " + treeDepth + ".");
+//				System.out.println("Depth: " + treeDepth + ".");
 				
 				if(prev_play == 0){//Prohgoumenws eixan paiksei ta lefka
 					
@@ -200,7 +200,7 @@ public class World
 			if(root.getChildren().get(i).getMinmaxValue()==value)
 			{ move=root.getChildren().get(i).getlastMove(); }
 		}
-		
+		System.out.print("My move: ");
 		changeRoot(move);
 		return move;
 	}
@@ -273,16 +273,18 @@ public class World
 	public void changeRoot(int[] move){
 		
 		int i;
-		
+		System.out.println(move.length);
 		for(i = 0; i < root.getChildren().size(); i++){
 			
 			if(Arrays.equals(move, root.getChildren().get(i).getlastMove())){
-				
+				System.out.println("Changed root for move " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 				root = root.getChildren().get(i);
 				treeDepth--;
-				break;
+				return;
 			}
 		}
+		
+		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")" + ": Did not find move!");
 	}
 	
  	private ArrayList<int[]> whiteMoves(String[][] board)
@@ -853,14 +855,6 @@ public class World
 		return(availableMoves);
 	}
 	
-//	private String selectRandomAction()
-//	{		
-//		Random ran = new Random();
-//		int x = ran.nextInt(availableMoves.size());
-//		
-//		return availableMoves.get(x);
-//	}
-	
 	public double getAvgBFactor()
 	{
 		return nBranches / (double) nTurns;
@@ -907,6 +901,8 @@ public class World
 	public void prizeAdded(int prizeX, int prizeY){
 		
 		root.getBoard()[prizeX][prizeY] = "P";
+		root.getChildren().clear();
+		curr_list = null;
 	}
 
 	public int getMyColor() {
