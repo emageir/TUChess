@@ -1,3 +1,6 @@
+//prizeAdded -> new tree
+
+
 package source;
 
 import java.util.ArrayList;
@@ -134,28 +137,36 @@ public class World
 					
 					for(i = 0; i < curr_list.size(); i++){
 						
-						availableMoves = blackMoves(curr_list.get(i).getBoard());
-						
-						for(j = 0; j < availableMoves.size(); j++){
+						if (!curr_list.get(i).isTerminal()){//an den einai termatikos komvos prosthese ta paidia tou
 							
-							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
-							curr_list.get(i).getChildren().add(child);
+							availableMoves = blackMoves(curr_list.get(i).getBoard());
+							
+							for(j = 0; j < availableMoves.size(); j++){
+								
+								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+								curr_list.get(i).getChildren().add(child);
+							}
+							availableMoves.clear();
 						}
-						availableMoves.clear();
 					}
 				}
 				else{//Prohgoumenws eixan paiksei ta mavra
 					
 					for(i = 0; i < curr_list.size(); i++){
 						
-						availableMoves = whiteMoves(curr_list.get(i).getBoard());
-						
-						for(j = 0; j < availableMoves.size(); j++){
+						if (!curr_list.get(i).isTerminal()){//an den einai termatikos komvos prosthese ta paidia tou
 							
-							State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
-							curr_list.get(i).getChildren().add(child);
+							availableMoves = whiteMoves(curr_list.get(i).getBoard());
+							
+							for(j = 0; j < availableMoves.size(); j++){
+								
+								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+								curr_list.get(i).getChildren().add(child);
+							}
+							availableMoves.clear();
 						}
-						availableMoves.clear();
+						
+						
 					}
 				}
 				
