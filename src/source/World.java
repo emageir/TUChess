@@ -280,7 +280,7 @@ public class World
 		node.setMinmaxValue(val);
 		return val;
 	}
-	
+
 	public void changeRoot(int[] move){
 		
 		int i;
