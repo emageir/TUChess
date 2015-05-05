@@ -330,6 +330,41 @@ public class World
 		
 	}
 	
+	private int MiniMaxing(int depth,State node,boolean MaximizingPlayer){
+		int val=0;
+		int bestVal=0;
+		int i=0;
+		
+		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		
+		if (MaximizingPlayer){
+			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(depth-1,node.getChildren().get(i),false);
+				if (val>bestVal)bestVal=val;	
+			}
+			
+		}
+		else
+		{
+			bestVal=Integer.MAX_VALUE;// praktika apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=MiniMaxing(depth-1,node.getChildren().get(i),true);
+				if (val<bestVal)  bestVal=val;
+			}
+		}
+		
+		node.setMinmaxValue(bestVal);
+		return bestVal;
+		
+	}
+	
+	
+	
 	private int abPrunning(State node,boolean MaximizingPlayer,int a, int b){
 		int val=0;
 		int i=0;
@@ -362,6 +397,38 @@ public class World
 		return val;
 	}
 
+	
+	private int abPrunning(int depth,State node,boolean MaximizingPlayer,int a, int b){
+		int val=0;
+		int i=0;
+		
+		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (MaximizingPlayer){
+			
+			val=Integer.MIN_VALUE;// praktika meiwn apeiro
+			
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=Math.max(val, abPrunning(depth-1,node.getChildren().get(i),false,a,b));
+				a=Math.max(a, val);
+				if (b<=a) break;
+			}
+		}
+		else{
+			val=Integer.MAX_VALUE;// praktika apeiro
+
+			for(i=0;i<node.getChildren().size();i++){
+				
+				val=Math.min(val,abPrunning(depth-1,node.getChildren().get(i),true,a,b));
+				b=Math.min(b,val);
+				if (b<=a) break;
+			}
+			
+		}
+		
+		node.setMinmaxValue(val);
+		return val;
+	}
 	
 	
 	
