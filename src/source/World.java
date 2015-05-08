@@ -5,6 +5,7 @@ package source;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 
 public class World
@@ -23,6 +24,7 @@ public class World
 	ArrayList<State> curr_list = null;
 	ArrayList<State> fathers_list = null;
 	ArrayList<State> expand_list = new ArrayList<State>();
+	Random rand = new Random();
 	
 	public World(int delay, int treeDepth)
 	{
@@ -444,6 +446,7 @@ public class World
 		int[] move = null;
 		float value;
 		int i;
+		ArrayList<State> possibleMoves = new ArrayList<State>();//Edw apothikevoume tis kinhseis me idio evaluation
 			
 //		value=MiniMaxing(2, root,true);
 		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE);
@@ -451,9 +454,13 @@ public class World
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value)
-			{ move=root.getChildren().get(i).getlastMove(); 
-			break;}
+			{ possibleMoves.add(root.getChildren().get(i)); }
 		}
+		
+		int selection = rand.nextInt(possibleMoves.size());
+		
+		move=possibleMoves.get(selection).getlastMove(); 
+		
 		System.out.print("My move: ");
 		if(move==null){
 			System.out.println("ALERT");
