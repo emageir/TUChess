@@ -144,7 +144,14 @@ public class State {
 				sc_incr+=3;
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("WK")){
-				sc_incr+=10;
+				if(scoreBlack + 10 > scoreWhite){
+					
+					sc_incr+=1000;
+				}
+				else{
+					
+					sc_incr -= 1000;
+				}
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
