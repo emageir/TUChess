@@ -401,8 +401,7 @@ public class World
 		return bestVal;
 		
 	}
-	
-	
+		
 	
 	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b){
 		float val=0;
@@ -436,7 +435,6 @@ public class World
 		return val;
 	}
 
-	
 	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
 		float val=0;
 		int i=0;
