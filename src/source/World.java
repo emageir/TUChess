@@ -629,7 +629,7 @@ public class World
 				root = root.getChildren().get(i);
 				root.removeFather();
 				root.getChildren().clear(); 
-				root.clearScores();
+//				root.clearScores();
 				expand_list.clear();
 				expand_list.add(root);
 //				createTree(delay, treeDepth);
