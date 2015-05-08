@@ -16,6 +16,7 @@ public class State {
 	private State father;
 	private float evaluation;
 	private float minmaxValue;
+	private int depth;
 	
 	
 	public float getMinmaxValue() {
@@ -26,7 +27,7 @@ public class State {
 		this.minmaxValue = bestVal;
 	}
 
-	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor){
+	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor, int depth){
 		this.board=board;
 		this.father=father;
 		this.lastPlayed=lastPlayed;
@@ -50,6 +51,7 @@ public class State {
 		evaluation=evaluate(myColor);
 
 		this.children = new ArrayList<State>();
+		this.depth = depth;
 	}
 	
 	//public State(){}///gia to arxiko state
@@ -79,7 +81,7 @@ public class State {
 	public void setScoreWhite(State father,int[] lastMove){
 		
 		float father_score=father.getScoreWhite();
-		int sc_incr=0;
+		float sc_incr=0;
 		
 			//score++
 			
@@ -88,25 +90,32 @@ public class State {
 				if(board[lastMove[2]][lastMove[3]].equals(" "))
 				{
 					sc_incr++;
-					System.out.println("Out of board");
+//					System.out.println("Out of board");
 				}
 			}
 			
 			if(father.getBoard()[lastMove[2]][lastMove[3]].equals("BP")){
 				sc_incr+=1;
-				System.out.println("Killed pawn");
+//				System.out.println("Killed pawn");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BR")){
 				sc_incr+=3;
-				System.out.println("Killed rook");
+//				System.out.println("Killed rook");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BK")){
-				sc_incr+=10;
-				System.out.println("Killed King");
+				if(scoreWhite + 10 > scoreBlack){
+					
+					sc_incr+=1000;
+				}
+				else{
+					
+					sc_incr -= 1000;
+				}
+//				System.out.println("Killed King");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
-				System.out.println("Got present on (" + lastMove[2] + "," + lastMove[3]);
+//				System.out.println("Got present on (" + lastMove[2] + "," + lastMove[3]);
 			}
 		
 		scoreWhite= father_score+sc_incr;
@@ -135,7 +144,14 @@ public class State {
 				sc_incr+=3;
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("WK")){
-				sc_incr+=10;
+				if(scoreBlack + 10 > scoreWhite){
+					
+					sc_incr+=1000;
+				}
+				else{
+					
+					sc_incr -= 1000;
+				}
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
@@ -190,10 +206,14 @@ public class State {
 			}
 			
 			if (myColor==0){//whites perspective
-				value=Math.abs(scoreWhite-whitePieces)-Math.abs(scoreBlack-blackPieces);
+				
+				float tmp1 = Math.abs(scoreWhite+(float)whitePieces);
+				float tmp2 = Math.abs(scoreBlack+(float)blackPieces);
+				
+				value=tmp1 - tmp2;
 			}
 			else{//blacks perspective
-				value=Math.abs(scoreBlack-blackPieces)-Math.abs(scoreWhite-whitePieces);
+				value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces);
 			}
 		return value;
 	}
@@ -215,6 +235,27 @@ public class State {
 	public void removeFather(){
 		
 		this.father = null;
+	}
+	
+	public void setBoard(String[][] board){
+		
+		this.board = board;
+	}
+	
+	public int getDepth(){
+		
+		return depth;
+	}
+	
+	public void setlastPlayed(int lastPlayed){
+		
+		this.lastPlayed = lastPlayed;
+	}
+	
+	public void clearScores(){
+		
+		this.scoreBlack = 0;
+		this.scoreWhite = 0;
 	}
 	
 }

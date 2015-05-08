@@ -17,12 +17,14 @@ public class World
 	private int nBranches = 0;
 	private int noPrize = 9;
 	private int treeDepth = 0;
+	int delay;
 	private State root = null;
+	private State groot = null;
 	ArrayList<State> curr_list = null;
 	ArrayList<State> fathers_list = null;
 	ArrayList<State> expand_list = new ArrayList<State>();
 	
-	public World()
+	public World(int delay, int treeDepth)
 	{
 		String[][] board = new String[rows][columns];
 		
@@ -78,8 +80,11 @@ public class World
 		for(int j=0; j<columns; j++)
 			board[rows/2][j] = "P";
 		
-		root = new State(board, null, 1, null,myColor);
+		root = new State(board, null, 1, null,myColor, 0);
 		expand_list.add(root);
+		
+		this.delay = delay;
+		this.treeDepth = treeDepth;
 		
 //		availableMoves = new ArrayList<String>();
 	}
@@ -118,7 +123,7 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
-				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor);
+				State child = new State(makeMove(root.getBoard(), availableMoves.get(i)), root, nextPlayer(root), availableMoves.get(i), myColor, 0);
 				root.getChildren().add(child);
 			}
 			availableMoves.clear();
@@ -157,7 +162,7 @@ public class World
 							
 							for(j = 0; j < availableMoves.size(); j++){
 								
-								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor, 0);
 								curr_list.get(i).getChildren().add(child);
 							}
 							availableMoves.clear();
@@ -197,7 +202,7 @@ public class World
 							
 							for(j = 0; j < availableMoves.size(); j++){
 								
-								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor);
+								State child = new State(makeMove(curr_list.get(i).getBoard(), availableMoves.get(j)), curr_list.get(i), nextPlayer(curr_list.get(i)), availableMoves.get(j), myColor, 0);
 								curr_list.get(i).getChildren().add(child);
 							}
 							availableMoves.clear();
@@ -283,16 +288,19 @@ public class World
 //		}
 	}
 	
-	public void createTree(){
+	public void createTree(int delay, int depth){
 		
 		ArrayList<int[]> availableMoves;
-		int i, j;
+		int i, j = 0;
 		State toBeExpanded;
 		
 		long time = System.currentTimeMillis();
 		
-		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < 4000)){
-			
+		boolean depthReached = false;
+		
+		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < delay) && !depthReached){
+//		while(!expand_list.isEmpty() && !depthReached){
+//			System.out.println(expand_list.size());
 			toBeExpanded = expand_list.remove(0);
 			
 			if(toBeExpanded.getlastPlayed() == 0){
@@ -306,14 +314,130 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
-				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor);
+				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor, toBeExpanded.getDepth() + 1);
+				toBeExpanded.getChildren().add(child);
 				if(!child.isTerminal()){
 					
 					expand_list.add(child);
 				}
+				
+				if(depth > 0 && (child.getDepth() - root.getDepth()) > depth){
+					
+					depthReached = true;
+					
+				}
 			}
-		}
+			
+		j++;
 		
+		}
+	}
+
+	public void dumdumTree(){
+		
+		String[][] board = new String[rows][columns];
+		
+		/* represent the board
+		
+		BP|BR|BK|BR|BP
+		BP|BP|BP|BP|BP
+		--|--|--|--|--
+		P |P |P |P |P 
+		--|--|--|--|--
+		WP|WP|WP|WP|WP
+		WP|WR|WK|WR|WP
+		*/
+		
+		// initialization of the board
+		for(int i=0; i<rows; i++)
+			for(int j=0; j<columns; j++)
+				board[i][j] = " ";
+		
+		// setting the black player's chess parts
+		
+		// black pawns
+		for(int j=0; j<columns; j++)
+			board[1][j] = "BP";
+		
+		board[0][0] = "BP";
+		board[0][columns-1] = "BP";
+		
+		// black rooks
+		board[0][1] = "BR";
+		board[0][columns-2] = "BR";
+		
+		// black king
+		board[0][columns/2] = "BK";
+		
+		// setting the white player's chess parts
+		
+		// white pawns
+		for(int j=0; j<columns; j++)
+			board[rows-2][j] = "WP";
+		
+		board[rows-1][0] = "WP";
+		board[rows-1][columns-1] = "WP";
+		
+		// white rooks
+		board[rows-1][1] = "WR";
+		board[rows-1][columns-2] = "WR";
+		
+		// white king
+		board[rows-1][columns/2] = "WK";
+		
+		// setting the prizes
+		for(int j=0; j<columns; j++)
+			board[rows/2][j] = "P";
+			
+		groot = new State(board, null, 1, null, myColor, 0);
+		int[] moves = new int[4];
+		
+		moves[0] = 5;
+		moves[1] = 4;
+		moves[2] = 4;
+		moves[3] = 4;
+		
+		State child = new State(makeMove(groot.getBoard(), moves), groot, 0, moves, myColor, 1);
+		groot.getChildren().add(child);
+		moves = new int[4];
+		moves[0] = 5;
+		moves[1] = 3;
+		moves[2] = 0;
+		moves[3] = 3;
+		child = new State(makeMove(groot.getBoard(), moves), groot, 0, moves, myColor, 1);
+		groot.getChildren().add(child);
+		
+		moves = new int[4];
+		moves[0] = 1;
+		moves[1] = 4;
+		moves[2] = 4;
+		moves[3] = 4;
+		child = new State(makeMove(groot.getChildren().get(0).getBoard(), moves), groot.getChildren().get(0), 1, moves, myColor, 2);
+		groot.getChildren().get(0).getChildren().add(child);
+		
+		moves = new int[4];
+		moves[0] = 1;
+		moves[1] = 1;
+		moves[2] = 2;
+		moves[3] = 1;
+		child = new State(makeMove(groot.getChildren().get(0).getBoard(), moves), groot.getChildren().get(0), 1, moves, myColor, 2);
+		groot.getChildren().get(0).getChildren().add(child);
+
+		moves = new int[4];
+		moves[0] = 1;
+		moves[1] = 3;
+		moves[2] = 3;
+		moves[3] = 3;
+		child = new State(makeMove(groot.getChildren().get(1).getBoard(), moves), groot.getChildren().get(1), 1, moves, myColor, 2);
+		groot.getChildren().get(1).getChildren().add(child);
+		
+		moves = new int[4];
+		moves[0] = 1;
+		moves[1] = 0;
+		moves[2] = 2;
+		moves[3] = 0;
+		child = new State(makeMove(groot.getChildren().get(1).getBoard(), moves), groot.getChildren().get(1), 1, moves, myColor, 2);
+		groot.getChildren().get(1).getChildren().add(child);
 	}
 	
 	public int[] selectMinimaxMove(){
@@ -321,20 +445,35 @@ public class World
 		float value;
 		int i;
 			
-		value=MiniMaxing(root,true);
-		System.out.println("value = " + value + "\n" + root.getChildren().size());
+//		value=MiniMaxing(2, root,true);
+		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE);
+		System.out.println("value = " + value);
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value)
-			{ move=root.getChildren().get(i).getlastMove(); }
+			{ move=root.getChildren().get(i).getlastMove(); 
+			break;}
 		}
 		System.out.print("My move: ");
 		if(move==null){
 			System.out.println("ALERT");
 		}
-		changeRoot(move);
+		try {
+			changeRoot(move);
+		} catch (NullPointerException e) {
+			
+			System.out.println("children size: " + root.getChildren().size() + "\nTried to find value " + value + " but children had values:");
+			
+			for(i = 0; i < root.getChildren().size(); i++){
+				
+				System.out.println(root.getChildren().get(i).getMinmaxValue());
+			}
+			
+			e.printStackTrace();
+		}
 		return move;
 	}
+	
 	
 	private float MiniMaxing(State node,boolean MaximizingPlayer){
 		float val=0;
@@ -401,18 +540,23 @@ public class World
 		return bestVal;
 		
 	}
-		
 	
 	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b){
 		float val=0;
 		int i=0;
 		
-		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (node.getChildren().isEmpty() || node.isTerminal()) {
+			
+//			System.out.println("leaf : Possible value: " + node.getEvaluation());
+			node.setMinmaxValue(node.getEvaluation());
+			return node.getEvaluation();
+		}
 		if (MaximizingPlayer){
 			
 			val=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
+				
 				
 				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b));
 				a=Math.max(a, val);
@@ -430,9 +574,9 @@ public class World
 			}
 			
 		}
-		
+//		System.out.println("node : Possible value: " + val);
 		node.setMinmaxValue(val);
-		return val;
+		return val ;
 	}
 
 	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
@@ -469,7 +613,6 @@ public class World
 	
 	
 	
-	
 	public void changeRoot(int[] move){
 		
 		int i;
@@ -483,12 +626,24 @@ public class World
 				System.out.println("Changed root for move " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 				root = root.getChildren().get(i);
 				root.removeFather();
-				treeDepth--;
+				root.getChildren().clear(); 
+				root.clearScores();
+				expand_list.clear();
+				expand_list.add(root);
+//				createTree(delay, treeDepth);
 				return;
 			}
 		}
 		
-		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")" + ": Did not find move!");
+		root.setBoard(makeMove(root.getBoard(), move));
+		root.getChildren().clear();
+		root.setlastPlayed(nextPlayer(root));
+		root.clearScores();
+		expand_list.clear();
+		expand_list.add(root);
+//		createTree(delay, treeDepth);
+		
+		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")" + ": Panic mode forced root!");
 	}
 	
  	private ArrayList<int[]> whiteMoves(String[][] board)
@@ -1068,7 +1223,9 @@ public class World
 	//int x1, int y1, int x2, int y2
 	public String[][] makeMove(String[][] board, int[] moves)
 	{
-		String chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
+		String chesspart;
+		try {
+			chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
 //		System.out.println(Arrays.toString(moves));
 		boolean pawnLastRow = false;
 		String[][] newBoard = new String[rows][columns];
@@ -1099,12 +1256,21 @@ public class World
 		}
 		
 		return newBoard;
+		}catch (StringIndexOutOfBoundsException e) {
+			
+			System.out.println("Tried to read from string \"" + board[moves[0]][moves[1]] + "\"");
+			
+			e.printStackTrace();
+		}
+		
+		return null;
 		
 	}
 	
 	public void prizeAdded(int prizeX, int prizeY){
 		
 		expand_list.clear();
+		System.out.println("Dropped tree, added prize");
 		root.getBoard()[prizeX][prizeY] = "P";
 		root.getChildren().clear();
 		expand_list.add(root);
