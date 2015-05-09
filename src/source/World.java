@@ -150,7 +150,7 @@ public class World
 		ArrayList<State> possibleMoves = new ArrayList<State>();//Edw apothikevoume tis kinhseis me idio evaluation
 			
 //		value=MiniMaxing(2, root,true);
-		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE);
+		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE, 0);
 		System.out.println("value = " + value);
 		
 		for(i=0;i<root.getChildren().size();i++){
@@ -251,15 +251,15 @@ public class World
 	
 
 	
-	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b){
+	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b, float percentage){
 		float val=0;
 		int i=0;
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()) {
 			
 //			System.out.println("leaf : Possible value: " + node.getEvaluation());
-			node.setMinmaxValue(node.getEvaluation());
-			return node.getEvaluation();
+			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
+			return ((10 - percentage) / 10) * node.getEvaluation();
 		}
 		if (MaximizingPlayer){
 			
@@ -267,8 +267,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				
-				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b));
+				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + (float)1.5)));
 				a=Math.max(a, val);
 				if (b<=a) break;
 			}
@@ -278,15 +277,16 @@ public class World
 
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=Math.min(val,abPrunning(node.getChildren().get(i),true,a,b));
+				val=Math.min(val,abPrunning(node.getChildren().get(i),true,a,b, percentage));
 				b=Math.min(b,val);
 				if (b<=a) break;
 			}
 			
 		}
 //		System.out.println("node : Possible value: " + val);
-		node.setMinmaxValue(val);
-		return val ;
+		System.out.println("Ahoy " + ((10 - percentage) / 10) * val);
+		node.setMinmaxValue(((10 - percentage) / 10) * val);
+		return ((10 - percentage) / 10) * val ;
 	}
 
 	
