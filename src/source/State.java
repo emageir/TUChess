@@ -125,7 +125,7 @@ public class State {
 	public void setScoreBlack(State father,int[] lastMove){
 		
 		float father_score=father.getScoreBlack();
-		int sc_incr=0;
+		float sc_incr=0;
 		
 			//score++
 			

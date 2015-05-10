@@ -14,9 +14,9 @@ public class Main {
 		int scoreBlack = 0;
 		boolean gotColor = false;
 		String playerName = "GrandMaster Flash";
-		int delay = 10000;
+		int delay = 4000;
 		int[] moves;
-		int treeDepth = 2;
+		int treeDepth = 0;
 		
 		//Dhmiourgoume object gia th syndesh
  		Connector conn = new Connector(9876, 200, playerName);
