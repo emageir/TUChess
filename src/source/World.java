@@ -82,7 +82,7 @@ public class World
 		for(int j=0; j<columns; j++)
 			board[rows/2][j] = "P";
 		
-		root = new State(board, null, 1, null,myColor, 0);
+		root = new State(board, null, 1, null,myColor, 0, 0, 0);
 		expand_list.add(root);
 		
 		this.delay = delay;
@@ -97,7 +97,7 @@ public class World
 	}
 
 	
-	public void createTree(int delay, int depth){
+	public void createTree(int delay, int depth, int absoluteScoreWhite, int absoluteScoreBlack){
 		
 		ArrayList<int[]> availableMoves;
 		int i, j = 0;
@@ -123,7 +123,7 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
-				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor, toBeExpanded.getDepth() + 1);
+				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor, toBeExpanded.getDepth() + 1, absoluteScoreWhite, absoluteScoreBlack);
 				toBeExpanded.getChildren().add(child);
 				if(!child.isTerminal()){
 					
@@ -140,6 +140,8 @@ public class World
 		j++;
 		
 		}
+		
+//		expand_list.clear();
 	}
 
 	

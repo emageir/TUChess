@@ -17,6 +17,8 @@ public class State {
 	private float evaluation;
 	private float minmaxValue;
 	private int depth;
+	private int absoluteScoreWhite;
+	private int absoluteScoreBlack;
 	
 	
 	public float getMinmaxValue() {
@@ -27,7 +29,7 @@ public class State {
 		this.minmaxValue = bestVal;
 	}
 
-	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor, int depth){
+	public State(String[][] board,State father,int lastPlayed,int[] lastMove,int myColor, int depth, int absoluteScoreWhite, int absoluteScoreBlack){
 		this.board=board;
 		this.father=father;
 		this.lastPlayed=lastPlayed;
@@ -52,6 +54,8 @@ public class State {
 
 		this.children = new ArrayList<State>();
 		this.depth = depth;
+		this.absoluteScoreWhite = absoluteScoreWhite;
+		this.absoluteScoreBlack = absoluteScoreBlack;
 	}
 	
 	//public State(){}///gia to arxiko state
@@ -103,7 +107,7 @@ public class State {
 //				System.out.println("Killed rook");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BK")){
-				if(scoreWhite + 10 > scoreBlack){
+				if(absoluteScoreWhite+ 10 > absoluteScoreBlack){
 					
 					sc_incr+=1000;
 				}
@@ -144,7 +148,7 @@ public class State {
 				sc_incr+=3;
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("WK")){
-				if(scoreBlack + 10 > scoreWhite){
+				if(absoluteScoreBlack + 10 > absoluteScoreWhite){
 					
 					sc_incr+=1000;
 				}
@@ -257,5 +261,6 @@ public class State {
 		this.scoreBlack = 0;
 		this.scoreWhite = 0;
 	}
+	
 	
 }
