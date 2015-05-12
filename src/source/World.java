@@ -286,7 +286,6 @@ public class World
 			
 		}
 //		System.out.println("node : Possible value: " + val);
-		System.out.println("Ahoy " + ((10 - percentage) / 10) * val);
 		node.setMinmaxValue(((10 - percentage) / 10) * val);
 		return ((10 - percentage) / 10) * val ;
 	}
