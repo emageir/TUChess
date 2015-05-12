@@ -15,17 +15,17 @@ public class State {
 	private ArrayList<State> children = null;
 	private State father;
 	private float evaluation;
-	private float minmaxValue;
+	private double minmaxValue;
 	private int depth;
 	private int absoluteScoreWhite;
 	private int absoluteScoreBlack;
 	
 	
-	public float getMinmaxValue() {
+	public double getMinmaxValue() {
 		return minmaxValue;
 	}
 
-	public void setMinmaxValue(float bestVal) {
+	public void setMinmaxValue(double bestVal) {
 		this.minmaxValue = bestVal;
 	}
 

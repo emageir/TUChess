@@ -17,6 +17,7 @@ public class Main {
 		int delay = 4000;
 		int[] moves;
 		int treeDepth = 0;
+		double rollOff = 1.5;
 		
 		//Dhmiourgoume object gia th syndesh
  		Connector conn = new Connector(9876, 200, playerName);

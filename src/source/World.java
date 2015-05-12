@@ -147,7 +147,7 @@ public class World
 	
 	public int[] selectMinimaxMove(){
 		int[] move = null;
-		float value;
+		double value;
 		int i;
 		ArrayList<State> possibleMoves = new ArrayList<State>();//Edw apothikevoume tis kinhseis me idio evaluation
 			
@@ -185,9 +185,9 @@ public class World
 	}
 	
 	
-	private float MiniMaxing(State node, boolean MaximizingPlayer, float percentage){
-		float val=0;
-		float bestVal=0;
+	private double MiniMaxing(State node, boolean MaximizingPlayer, double percentage){
+		double val=0;
+		double bestVal=0;
 		int i=0;
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()){
@@ -201,7 +201,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(node.getChildren().get(i),false, (percentage + (float)1.5));
+				val=MiniMaxing(node.getChildren().get(i),false, (percentage + 1.5));
 				if (val>bestVal)bestVal=val;	
 			}
 			
@@ -261,13 +261,12 @@ public class World
 	
 
 	
-	private float abPrunning(State node,boolean MaximizingPlayer,float a, float b, float percentage){
-		float val=0;
+	private double abPrunning(State node,boolean MaximizingPlayer,double a, double b, double percentage){
+		double val=0;
 		int i=0;
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()) {
 			
-//			System.out.println("leaf : Possible value: " + node.getEvaluation());
 			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
 			return ((10 - percentage) / 10) * node.getEvaluation();
 		}
@@ -277,7 +276,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + (float)1.5)));
+				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + 1.5)));
 				a=Math.max(a, val);
 				if (b<=a) break;
 			}
@@ -293,24 +292,28 @@ public class World
 			}
 			
 		}
-//		System.out.println("node : Possible value: " + val);
+
 		node.setMinmaxValue(((10 - percentage) / 10) * val);
 		return ((10 - percentage) / 10) * val ;
 	}
 
 	
-	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
-		float val=0;
+	private double abPrunning(int depth,State node,boolean MaximizingPlayer,double a, double b, double percentage){
+		double val=0;
 		int i=0;
 		
-		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()){
+			
+			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
+			return ((10 - percentage) / 10) * node.getEvaluation();
+		}
 		if (MaximizingPlayer){
 			
 			val=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=Math.max(val, abPrunning(depth-1,node.getChildren().get(i),false,a,b));
+				val=Math.max(val, abPrunning(depth-1,node.getChildren().get(i),false,a,b, (percentage + 1.5)));
 				a=Math.max(a, val);
 				if (b<=a) break;
 			}
@@ -320,15 +323,15 @@ public class World
 
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=Math.min(val,abPrunning(depth-1,node.getChildren().get(i),true,a,b));
+				val=Math.min(val,abPrunning(depth-1,node.getChildren().get(i),true,a,b, percentage));
 				b=Math.min(b,val);
 				if (b<=a) break;
 			}
 			
 		}
 		
-		node.setMinmaxValue(val);
-		return val;
+		node.setMinmaxValue(((10 - percentage) / 10) * val);
+		return ((10 - percentage) / 10) * val ;
 	}
 	
 	
