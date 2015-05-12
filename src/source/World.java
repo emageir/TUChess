@@ -185,19 +185,23 @@ public class World
 	}
 	
 	
-	private float MiniMaxing(State node,boolean MaximizingPlayer){
+	private float MiniMaxing(State node, boolean MaximizingPlayer, float percentage){
 		float val=0;
 		float bestVal=0;
 		int i=0;
 		
-		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (node.getChildren().isEmpty() || node.isTerminal()){
+			
+			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
+			return((10 - percentage) / 10) * node.getEvaluation();
+		}
 		
 		if (MaximizingPlayer){
 			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(node.getChildren().get(i),false);
+				val=MiniMaxing(node.getChildren().get(i),false, (percentage + (float)1.5));
 				if (val>bestVal)bestVal=val;	
 			}
 			
@@ -208,29 +212,33 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(node.getChildren().get(i),true);
+				val=MiniMaxing(node.getChildren().get(i),true, percentage);
 				if (val<bestVal)  bestVal=val;
 			}
 		}
 		
-		node.setMinmaxValue(bestVal);
-		return bestVal;
+		node.setMinmaxValue(((10 - percentage) / 10) * bestVal);
+		return ((10 - percentage) / 10) * bestVal;
 		
 	}
 	
-	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer){
+	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer, float percentage){
 		float val=0;
 		float bestVal=0;
 		int i=0;
 		
-		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()){
+			
+			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
+			return((10 - percentage) / 10) * node.getEvaluation();
+		}
 		
 		if (MaximizingPlayer){
 			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(depth-1,node.getChildren().get(i),false);
+				val=MiniMaxing(depth-1,node.getChildren().get(i),false, (percentage + (float)1.5));
 				if (val>bestVal)bestVal=val;	
 			}
 			
@@ -241,13 +249,13 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(depth-1,node.getChildren().get(i),true);
+				val=MiniMaxing(depth-1,node.getChildren().get(i),true, percentage);
 				if (val<bestVal)  bestVal=val;
 			}
 		}
 		
-		node.setMinmaxValue(bestVal);
-		return bestVal;
+		node.setMinmaxValue(((10 - percentage) / 10) * bestVal);
+		return ((10 - percentage) / 10) * bestVal;
 		
 	}
 	
