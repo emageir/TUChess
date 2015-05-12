@@ -25,8 +25,9 @@ public class World
 	ArrayList<State> fathers_list = null;
 	ArrayList<State> expand_list = new ArrayList<State>();
 	Random rand = new Random();
+	double rollOff;
 	
-	public World(int delay, int treeDepth)
+	public World(int delay, int treeDepth, double rollOff)
 	{
 		String[][] board = new String[rows][columns];
 		
@@ -87,6 +88,7 @@ public class World
 		
 		this.delay = delay;
 		this.treeDepth = treeDepth;
+		this.rollOff = rollOff;
 		
 //		availableMoves = new ArrayList<String>();
 	}
@@ -201,7 +203,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(node.getChildren().get(i),false, (percentage + 1.5));
+				val=MiniMaxing(node.getChildren().get(i),false, (percentage + rollOff));
 				if (val>bestVal)bestVal=val;	
 			}
 			
@@ -222,9 +224,9 @@ public class World
 		
 	}
 	
-	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer, float percentage){
-		float val=0;
-		float bestVal=0;
+	private double MiniMaxing(int depth,State node,boolean MaximizingPlayer, double percentage){
+		double val=0;
+		double bestVal=0;
 		int i=0;
 		
 		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()){
@@ -238,7 +240,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=MiniMaxing(depth-1,node.getChildren().get(i),false, (percentage + (float)1.5));
+				val=MiniMaxing(depth-1,node.getChildren().get(i),false, (percentage + rollOff));
 				if (val>bestVal)bestVal=val;	
 			}
 			
@@ -276,7 +278,7 @@ public class World
 			
 			for(i=0;i<node.getChildren().size();i++){
 				
-				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + 1.5)));
+				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + rollOff)));
 				a=Math.max(a, val);
 				if (b<=a) break;
 			}

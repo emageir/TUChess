@@ -22,7 +22,7 @@ public class Main {
 		//Dhmiourgoume object gia th syndesh
  		Connector conn = new Connector(9876, 200, playerName);
 		
-		World world = new World(delay, treeDepth);
+		World world = new World(delay, treeDepth, rollOff);
 		
 		//Stelnoume to onoma sto server
 		conn.sendName();
