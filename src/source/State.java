@@ -194,27 +194,66 @@ public class State {
 		float value=0;
 		int i,j;
 		int blackPieces=0,whitePieces=0;
-		// count pieces
 		
-			for (i=0;i<rows;i++) {
-				for (j=0;j<columns;j++){
+		int DoubledW=0,DoubledB=0,IsolW=0,IsolB=0,BlockW=0,BlockB=0;
+		boolean emptycolW;
+		int posibleIsolW=0;
+		boolean emptycolB;
+		int posibleIsolB=0;
+		
+			for (i=0;i<columns;i++) {
+				emptycolW=true;
+				emptycolB=true;
+				
+				for (j=0;j<rows;j++){
 					
 					if(board[i][j].charAt(0)=='B'){
 						blackPieces++;
+						
+						if (board[i][j].equals("BP"))
+							{emptycolB=false;}
 					}
 					else if(board[i][j].charAt(0)=='W'){
 						whitePieces++;
-					}
-					
+								
+						if (board[i][j].equals("WP"))
+							{emptycolW=false;}
+				    }
 				}
-			}
+				
+				if(emptycolW==true) {
+					if (posibleIsolW==2) IsolW+=1;// an einai keno kai prin synanthses pioni
+					posibleIsolW=1;	
+				}
+				else{
+					
+					if (posibleIsolW==1)posibleIsolW=2;
+					else{
+						posibleIsolW=0;
+					}
+				}
+				
+				if(emptycolB==true) {
+					if (posibleIsolB==2) IsolB+=1;// an einai keno kai prin synanthses pioni
+					posibleIsolB=1;	
+				}
+				else{
+					if (posibleIsolB==1)posibleIsolB=2;
+					else{
+						posibleIsolB=0;
+					}
+				}
+			
+				
+				
+					
+			}// end of columns loop
+	
+			
 			
 			if (myColor==0){//whites perspective
 				
-				float tmp1 = Math.abs(scoreWhite+(float)whitePieces);
-				float tmp2 = Math.abs(scoreBlack+(float)blackPieces);
-				
-				value=tmp1 - tmp2;
+				value=Math.abs(scoreWhite+whitePieces) - Math.abs(scoreBlack+blackPieces);
 			}
 			else{//blacks perspective
 				value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces);
