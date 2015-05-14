@@ -156,7 +156,7 @@ public class World
 		System.out.println("value = " + value);
 		
 		for(i=0;i<root.getChildren().size();i++){
-			if(root.getChildren().get(i).getMinmaxValue()==value)
+			if(root.getChildren().get(i).getMinmaxValue()==value && !root.getChildren().get(i).getIsPruned())
 			{ possibleMoves.add(root.getChildren().get(i)); }
 		}
 		
@@ -271,7 +271,11 @@ public class World
 				
 				val=Math.max(val, abPrunning(node.getChildren().get(i),false,a,b, (percentage + (float)1.5)));
 				a=Math.max(a, val);
-				if (b<=a) break;
+				if (b<=a){
+					
+					node.setIsPruned(true);
+					break;
+				}
 			}
 		}
 		else{
@@ -281,7 +285,11 @@ public class World
 				
 				val=Math.min(val,abPrunning(node.getChildren().get(i),true,a,b, percentage));
 				b=Math.min(b,val);
-				if (b<=a) break;
+				if (b<=a){
+					
+					node.setIsPruned(true);
+					break;
+				}
 			}
 			
 		}

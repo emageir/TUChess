@@ -19,6 +19,7 @@ public class State {
 	private int depth;
 	private int absoluteScoreWhite;
 	private int absoluteScoreBlack;
+	private boolean isPruned = false;
 	
 	
 	public double getMinmaxValue() {
@@ -312,6 +313,14 @@ public class State {
 		this.scoreWhite = 0;
 	}
 	
+	public void setIsPruned(boolean isPruned){
+		
+		this.isPruned = isPruned;
+	}
 	
+	public boolean getIsPruned(){
+		
+		return isPruned;
+	}
 
 }
