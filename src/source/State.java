@@ -50,12 +50,14 @@ public class State {
 			}
 		}
 		
+		this.absoluteScoreWhite = absoluteScoreWhite+(int)scoreWhite;
+		this.absoluteScoreBlack = absoluteScoreBlack+(int)scoreBlack;
+		
 		evaluation=evaluate(myColor);
 
 		this.children = new ArrayList<State>();
 		this.depth = depth;
-		this.absoluteScoreWhite = absoluteScoreWhite;
-		this.absoluteScoreBlack = absoluteScoreBlack;
+		
 	}
 	
 	//public State(){}///gia to arxiko state
