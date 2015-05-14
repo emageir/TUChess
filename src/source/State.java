@@ -200,6 +200,8 @@ public class State {
 		int posibleIsolW=0;
 		boolean emptycolB;
 		int posibleIsolB=0;
+		int pawnStructW=0;
+		int pawnStructB=0;
 		
 			for (i=0;i<columns;i++) {
 				emptycolW=true;
@@ -207,17 +209,25 @@ public class State {
 				
 				for (j=0;j<rows;j++){
 					
-					if(board[i][j].charAt(0)=='B'){
+					if(board[j][i].charAt(0)=='B'){
 						blackPieces++;
 						
-						if (board[i][j].equals("BP"))
-							{emptycolB=false;}
+						if (board[j][i].equals("BP"))
+							{
+							if(emptycolB==false)DoubledB+=1;
+							emptycolB=false;
+							if (board[j+1][i].charAt(0)=='W') BlockB+=1;
+							}
 					}
-					else if(board[i][j].charAt(0)=='W'){
+					else if(board[j][i].charAt(0)=='W'){
 						whitePieces++;
 								
-						if (board[i][j].equals("WP"))
-							{emptycolW=false;}
+						if (board[j][i].equals("WP"))
+							{
+							if(emptycolW==false)DoubledW+=1;
+							emptycolW=false;
+							if (board[j-1][i].charAt(0)=='B') BlockW+=1;
+							}
 				    }
 				}
 				
@@ -243,20 +253,19 @@ public class State {
 						posibleIsolB=0;
 					}
 				}
-			
-				
-				
-					
+
 			}// end of columns loop
 	
+			pawnStructW=DoubledW+IsolW+BlockW;
+			pawnStructB=DoubledB+IsolB+BlockB;
 			
 			
 			if (myColor==0){//whites perspective
 				
-				value=Math.abs(scoreWhite+whitePieces) - Math.abs(scoreBlack+blackPieces);
+				value=Math.abs(scoreWhite+whitePieces)-Math.abs(scoreBlack+blackPieces)-(float)0.5*(pawnStructW-pawnStructB);
 			}
 			else{//blacks perspective
-				value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces);
+				value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces)-(float)0.5*(pawnStructB-pawnStructW);
 			}
 		return value;
 	}
