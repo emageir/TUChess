@@ -2,7 +2,7 @@ package source;
 
 import java.util.ArrayList;
 
-public class State {
+public class State implements Comparable<State>{
 	
 	private int rows = 7;
 	private int columns = 5;
@@ -15,18 +15,18 @@ public class State {
 	private ArrayList<State> children = null;
 	private State father;
 	private float evaluation;
-	private double minmaxValue;
+	private float minmaxValue;
 	private int depth;
 	private int absoluteScoreWhite;
 	private int absoluteScoreBlack;
 	private boolean isPruned = false;
 	
 	
-	public double getMinmaxValue() {
+	public float getMinmaxValue() {
 		return minmaxValue;
 	}
 
-	public void setMinmaxValue(double bestVal) {
+	public void setMinmaxValue(float bestVal) {
 		this.minmaxValue = bestVal;
 	}
 
@@ -321,6 +321,24 @@ public class State {
 	public boolean getIsPruned(){
 		
 		return isPruned;
+	}
+
+	@Override
+	public int compareTo(State other) {
+		
+		if(this.getEvaluation() - other.getEvaluation() > 0){
+			
+			return(-1);
+		}
+		else if(this.getEvaluation() - other.getEvaluation() < 0){
+			
+			return(1);
+		}
+		else{
+			
+			return(0);
+		}
+		
 	}
 
 }

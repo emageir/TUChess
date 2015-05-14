@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
+
 
 public class World
 {
@@ -144,6 +146,70 @@ public class World
 //		expand_list.clear();
 	}
 
+
+	public void createFPTree(int delay, int depth, int absoluteScoreWhite, int absoluteScoreBlack, int branchFactor){
+		
+		ArrayList<int[]> availableMoves;
+		ArrayList<State> toBeSelected = new ArrayList<State>();
+		int i;
+		State toBeExpanded;
+		
+		long time = System.currentTimeMillis();
+		
+		boolean depthReached = false;
+		
+		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < delay) && !depthReached){
+//		while(!expand_list.isEmpty() && !depthReached){
+//			System.out.println(expand_list.size());
+			toBeExpanded = expand_list.remove(0);
+			
+			if(toBeExpanded.getlastPlayed() == 0){
+				
+				availableMoves = blackMoves(toBeExpanded.getBoard());
+			}
+			else{
+				
+				availableMoves = whiteMoves(toBeExpanded.getBoard());
+			}
+			
+			for(i = 0; i < availableMoves.size(); i++){
+				
+				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor, toBeExpanded.getDepth() + 1, absoluteScoreWhite, absoluteScoreBlack);
+				toBeSelected.add(child);
+				
+				
+			}
+			
+			if (toBeExpanded.getlastPlayed() == 1) {
+				java.util.Collections.sort(toBeSelected);
+			}
+			else{
+				java.util.Collections.sort(toBeSelected);
+				java.util.Collections.reverse(toBeSelected);
+			}
+			i = 0;
+			
+			while(i < branchFactor && i < toBeSelected.size()){
+				
+				toBeExpanded.getChildren().add(toBeSelected.get(i));
+				if(!toBeSelected.get(i).isTerminal()){
+					
+					expand_list.add(toBeSelected.get(i));
+				}
+				
+				if(depth > 0 && (toBeSelected.get(i).getDepth() - root.getDepth()) > depth){
+					
+					depthReached = true;
+					
+				}
+				
+				i++;
+			}
+			
+			toBeSelected.clear();
+		
+		}
+	}
 	
 	public int[] selectMinimaxMove(){
 		int[] move = null;
@@ -160,28 +226,26 @@ public class World
 			{ possibleMoves.add(root.getChildren().get(i)); }
 		}
 		
-		int selection = rand.nextInt(possibleMoves.size());
+		int selection;
+		try {
+			selection = rand.nextInt(possibleMoves.size());
+		
 		
 		move=possibleMoves.get(selection).getlastMove(); 
 		
 		System.out.print("My move: ");
-		if(move==null){
-			System.out.println("ALERT");
-		}
-		try {
-			changeRoot(move);
-		} catch (NullPointerException e) {
-			
-			System.out.println("children size: " + root.getChildren().size() + "\nTried to find value " + value + " but children had values:");
+		changeRoot(move);
+		return move;} catch (IllegalArgumentException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("Tried to find value " + value + " but children had values:");
 			
 			for(i = 0; i < root.getChildren().size(); i++){
 				
 				System.out.println(root.getChildren().get(i).getMinmaxValue());
+				
 			}
-			
-			e.printStackTrace();
 		}
-		return move;
+		return null;
 	}
 	
 	
@@ -389,21 +453,6 @@ public class World
 				
 				if(secondLetter.equals("P"))	// it is a pawn
 				{
-					// check if it can move towards the last row
-					if(i-1 == 0 && (Character.toString(board[i-1][j].charAt(0)).equals(" ") 
-							         || Character.toString(board[i-1][j].charAt(0)).equals("P")))
-					{
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//						       Integer.toString(i-1) + Integer.toString(j);
-						move  = new int[4];
-						move[0] = i;
-						move[1] = j;
-						move[2] = i - 1;
-						move[3] = j;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
-						availableMoves.add(move);
-						continue;
-					}
 					
 					// check if it can move one vertical position ahead
 					firstLetter = Character.toString(board[i-1][j].charAt(0));
@@ -426,8 +475,7 @@ public class World
 					{
 						firstLetter = Character.toString(board[i-1][j-1].charAt(0));
 						
-						if(firstLetter.equals("W") || firstLetter.equals(" ") || firstLetter.equals("P"))
-							continue;
+						if(firstLetter.equals("B")){
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-1) + Integer.toString(j-1);
@@ -438,15 +486,14 @@ public class World
 						move[3] = j - 1;
 //						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
-					}
+					}}
 					
 					// check if it can move crosswise to the right
 					if(j!=columns-1 && i!=0)
 					{
 						firstLetter = Character.toString(board[i-1][j+1].charAt(0));
 						
-						if(firstLetter.equals("W") || firstLetter.equals(" ") || firstLetter.equals("P"))
-							continue;
+						if(firstLetter.equals("B")){
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i-1) + Integer.toString(j+1);
@@ -456,7 +503,7 @@ public class World
 						move[2] = i - 1;
 						move[3] = j + 1;
 //						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
-						availableMoves.add(move);
+						availableMoves.add(move);}
 					}
 				}
 				else if(secondLetter.equals("R"))	// it is a rook
@@ -674,21 +721,6 @@ public class World
 				
 				if(secondLetter.equals("P"))	// it is a pawn
 				{
-					// check if it is at the last row
-					if(i+1 == rows-1 && (Character.toString(board[i+1][j].charAt(0)).equals(" ")
-										  || Character.toString(board[i+1][j].charAt(0)).equals("P")))
-					{
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//						       Integer.toString(i+1) + Integer.toString(j);
-						move  = new int[4];
-						move[0] = i;
-						move[1] = j;
-						move[2] = i + 1;
-						move[3] = j;
-						
-						availableMoves.add(move);
-						continue;
-					}
 					
 					// check if it can move one vertical position ahead
 					firstLetter = Character.toString(board[i+1][j].charAt(0));
@@ -711,8 +743,7 @@ public class World
 					{
 						firstLetter = Character.toString(board[i+1][j-1].charAt(0));
 						
-						if(firstLetter.equals("B") || firstLetter.equals(" ") || firstLetter.equals("P"))
-							continue;
+						if(firstLetter.equals("W")){
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+1) + Integer.toString(j-1);
@@ -722,7 +753,7 @@ public class World
 						move[2] = i + 1;
 						move[3] = j - 1;
 						
-						availableMoves.add(move);
+						availableMoves.add(move);}
 					}
 					
 					// check if it can move crosswise to the right
@@ -730,8 +761,7 @@ public class World
 					{
 						firstLetter = Character.toString(board[i+1][j+1].charAt(0));
 						
-						if(firstLetter.equals("B") || firstLetter.equals(" ") || firstLetter.equals("P"))
-							continue;
+						if(firstLetter.equals("W")){
 						
 //						move = Integer.toString(i) + Integer.toString(j) + 
 //							   Integer.toString(i+1) + Integer.toString(j+1);
@@ -741,7 +771,7 @@ public class World
 						move[2] = i + 1;
 						move[3] = j + 1;
 						
-						availableMoves.add(move);
+						availableMoves.add(move);}
 					}
 				}
 				else if(secondLetter.equals("R"))	// it is a rook
