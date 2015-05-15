@@ -1,7 +1,5 @@
 package source;
 
-import java.net.DatagramSocket;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -17,12 +15,12 @@ public class Main {
 		int delay = 4000;
 		int[] moves;
 		int treeDepth = 0;
-		int branchFactor = 10;
+//		int branchFactor = 10;
 		
 		//Dhmiourgoume object gia th syndesh
  		Connector conn = new Connector(9876, 200, playerName);
 		
-		World world = new World(delay, treeDepth);
+		World world = new World(delay);
 		
 		//Stelnoume to onoma sto server
 		conn.sendName();

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 
 public class World
@@ -18,17 +17,14 @@ public class World
 	private int rookBlocks = 2;		// rook can move towards <rookBlocks> blocks in any vertical or horizontal direction
 	private int nTurns = 0;
 	private int nBranches = 0;
-	private int noPrize = 9;
-	private int treeDepth = 0;
 	int delay;
 	private State root = null;
-	private State groot = null;
 	ArrayList<State> curr_list = null;
 	ArrayList<State> fathers_list = null;
 	ArrayList<State> expand_list = new ArrayList<State>();
 	Random rand = new Random();
 	
-	public World(int delay, int treeDepth)
+	public World(int delay)
 	{
 		String[][] board = new String[rows][columns];
 		
@@ -88,7 +84,6 @@ public class World
 		expand_list.add(root);
 		
 		this.delay = delay;
-		this.treeDepth = treeDepth;
 		
 //		availableMoves = new ArrayList<String>();
 	}
@@ -102,7 +97,7 @@ public class World
 	public void createTree(int delay, int depth, int absoluteScoreWhite, int absoluteScoreBlack){
 		
 		ArrayList<int[]> availableMoves;
-		int i, j = 0;
+		int i;
 		State toBeExpanded;
 		
 		long time = System.currentTimeMillis();
@@ -137,9 +132,6 @@ public class World
 					
 				}
 			}
-			
-		j++;
-		
 		}
 		
 	}
@@ -257,6 +249,7 @@ public class World
 	}
 	
 	
+	@SuppressWarnings("unused")
 	private float MiniMaxing(State node,boolean MaximizingPlayer){
 		float val=0;
 		float bestVal=0;
@@ -290,6 +283,7 @@ public class World
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer){
 		float val=0;
 		float bestVal=0;
@@ -370,6 +364,7 @@ public class World
 	}
 
 	
+	@SuppressWarnings("unused")
 	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
 		float val=0;
 		int i=0;
@@ -668,8 +663,7 @@ public class World
 				}			
 			}	
 		}
-		int i;
-
+		
 		return(availableMoves);
 	}
 	
