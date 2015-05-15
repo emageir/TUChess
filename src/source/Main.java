@@ -27,14 +27,6 @@ public class Main {
 		//Stelnoume to onoma sto server
 		conn.sendName();
 		
-//		world.dumdumTree();
-//		int[] movies = new int[4];+
-//		movies = world.selectMinimaxMove();
-//		
-//		for(int i = 0; i < 4; i++){
-//			
-//			System.out.println(movies[i]);
-//		}
 		
 		//Lamvanoume ta mhnymata kai ta epeksergazomaste
 		while(true){
@@ -66,7 +58,6 @@ public class Main {
 						moves = new int[4];
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
 						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
-//						System.out.println(action);
 						conn.sendMessages(action);
 					}
 					else{
@@ -140,7 +131,6 @@ public class Main {
 						moves = new int[4];
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
 						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
-						//System.out.println(action);
 						conn.sendMessages(action);		
 					}
 					else//Paizei o antipalos

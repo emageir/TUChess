@@ -111,7 +111,6 @@ public class World
 		
 		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < delay) && !depthReached){
 //		while(!expand_list.isEmpty() && !depthReached){
-//			System.out.println(expand_list.size());
 			toBeExpanded = expand_list.remove(0);
 			
 			if(toBeExpanded.getlastPlayed() == 0){
@@ -143,7 +142,6 @@ public class World
 		
 		}
 		
-//		expand_list.clear();
 	}
 
 
@@ -160,7 +158,6 @@ public class World
 		
 		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < delay) && !depthReached){
 //		while(!expand_list.isEmpty() && !depthReached){
-//			System.out.println(expand_list.size());
 			toBeExpanded = expand_list.remove(0);
 			
 			if(toBeExpanded.getlastPlayed() == 0){
@@ -216,8 +213,7 @@ public class World
 		float value;
 		int i;
 		ArrayList<State> possibleMoves = new ArrayList<State>();//Edw apothikevoume tis kinhseis me idio evaluation
-			
-//		value=MiniMaxing(2, root,true);
+		
 		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE, 0);
 		System.out.println("value = " + value);
 		
@@ -335,7 +331,6 @@ public class World
 		
 		if (node.getChildren().isEmpty() || node.isTerminal()) {
 			
-//			System.out.println("leaf : Possible value: " + node.getEvaluation());
 			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
 			return ((10 - percentage) / 10) * node.getEvaluation();
 		}
@@ -369,7 +364,7 @@ public class World
 			}
 			
 		}
-//		System.out.println("node : Possible value: " + val);
+
 		node.setMinmaxValue(((10 - percentage) / 10) * val);
 		return ((10 - percentage) / 10) * val ;
 	}
@@ -415,7 +410,7 @@ public class World
 		if(move.equals(null)){
 			System.out.println("ALERT");
 		}
-//		System.out.println(move.length);
+
 		for(i = 0; i < root.getChildren().size(); i++){
 			
 			if(Arrays.equals(move, root.getChildren().get(i).getlastMove())){
@@ -426,7 +421,7 @@ public class World
 				root.clearScores();
 				expand_list.clear();
 				expand_list.add(root);
-//				createTree(delay, treeDepth);
+
 				return;
 			}
 		}
@@ -437,7 +432,6 @@ public class World
 		root.clearScores();
 		expand_list.clear();
 		expand_list.add(root);
-//		createTree(delay, treeDepth);
 		
 		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")" + ": Panic mode forced root!");
 	}
@@ -446,7 +440,6 @@ public class World
 	{
 		String firstLetter = "";
 		String secondLetter = "";
-//		String move = "";
 		int[] move;
 		ArrayList<int[]> availableMoves = new ArrayList<int[]>();
 				
@@ -471,14 +464,11 @@ public class World
 					
 					if(firstLetter.equals(" ") || firstLetter.equals("P"))
 					{
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i-1) + Integer.toString(j);
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}
 					
@@ -488,15 +478,12 @@ public class World
 						firstLetter = Character.toString(board[i-1][j-1].charAt(0));
 						
 						if(firstLetter.equals("B")){
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i-1) + Integer.toString(j-1);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j - 1;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 					}}
 					
@@ -507,14 +494,11 @@ public class World
 						
 						if(firstLetter.equals("B")){
 						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i-1) + Integer.toString(j+1);
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - 1;
 						move[3] = j + 1;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);}
 					}
 				}
@@ -531,14 +515,11 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i-(k+1)) + Integer.toString(j);
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i - (k + 1);
 						move[3] = j;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -557,14 +538,11 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i+(k+1)) + Integer.toString(j);
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i + (k + 1);
 						move[3] = j;
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -583,14 +561,11 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i) + Integer.toString(j-(k+1));
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
 						move[3] = (j - (k + 1));
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -609,14 +584,11 @@ public class World
 						if(firstLetter.equals("W"))
 							break;
 						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i) + Integer.toString(j+(k+1));
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
 						move[2] = i;
 						move[3] = (j + (k + 1));
-//						System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 						availableMoves.add(move);
 						
 						// prevent detouring a chesspart to attack the other
@@ -633,14 +605,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i-1) + Integer.toString(j);
+							
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i - 1;
 							move[3] = j;
-//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -652,14 +622,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i+1) + Integer.toString(j);
+
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i + 1;
 							move[3] = j;
-//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -671,14 +639,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i) + Integer.toString(j-1);
+
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
 							move[3] = j - 1;
-//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -690,15 +656,12 @@ public class World
 						
 						if(!firstLetter.equals("W"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i) + Integer.toString(j+1);
+
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
 							move[2] = i;
 							move[3] = j + 1;
-							
-//							System.out.println("Added " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 							availableMoves.add(move);	
 						}
 					}
@@ -706,7 +669,7 @@ public class World
 			}	
 		}
 		int i;
-//		for(i = 0; i < availableMoves.size(); i++){ System.out.println(Arrays.toString(availableMoves.get(i))); }
+
 		return(availableMoves);
 	}
 	
@@ -739,8 +702,7 @@ public class World
 					
 					if(firstLetter.equals(" ") || firstLetter.equals("P"))
 					{
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i+1) + Integer.toString(j);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -756,9 +718,7 @@ public class World
 						firstLetter = Character.toString(board[i+1][j-1].charAt(0));
 						
 						if(firstLetter.equals("W")){
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i+1) + Integer.toString(j-1);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -774,9 +734,7 @@ public class World
 						firstLetter = Character.toString(board[i+1][j+1].charAt(0));
 						
 						if(firstLetter.equals("W")){
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i+1) + Integer.toString(j+1);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -798,9 +756,7 @@ public class World
 						
 						if(firstLetter.equals("B"))
 							break;
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i-(k+1)) + Integer.toString(j);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -824,9 +780,7 @@ public class World
 						
 						if(firstLetter.equals("B"))
 							break;
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i+(k+1)) + Integer.toString(j);
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -850,9 +804,7 @@ public class World
 						
 						if(firstLetter.equals("B"))
 							break;
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i) + Integer.toString(j-(k+1));
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -876,9 +828,7 @@ public class World
 						
 						if(firstLetter.equals("B"))
 							break;
-						
-//						move = Integer.toString(i) + Integer.toString(j) + 
-//							   Integer.toString(i) + Integer.toString(j+(k+1));
+
 						move  = new int[4];
 						move[0] = i;
 						move[1] = j;
@@ -901,8 +851,7 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i-1) + Integer.toString(j);
+
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
@@ -920,8 +869,6 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i+1) + Integer.toString(j);
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
@@ -939,8 +886,6 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i) + Integer.toString(j-1);
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
@@ -958,8 +903,6 @@ public class World
 						
 						if(!firstLetter.equals("B"))
 						{
-//							move = Integer.toString(i) + Integer.toString(j) + 
-//								   Integer.toString(i) + Integer.toString(j+1);
 							move  = new int[4];
 							move[0] = i;
 							move[1] = j;
@@ -988,7 +931,6 @@ public class World
 		String chesspart;
 		try {
 			chesspart = Character.toString(board[moves[0]][moves[1]].charAt(1));
-//		System.out.println(Arrays.toString(moves));
 		boolean pawnLastRow = false;
 		String[][] newBoard = new String[rows][columns];
 		int i, j;

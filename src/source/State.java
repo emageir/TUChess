@@ -71,7 +71,6 @@ public class State implements Comparable<State>{
 			for (j=0;j<columns;j++){
 				if(board[i][j].equals("WK")) Wking=true;
 				else if(board[i][j].equals("BK")) Bking=true;
-				//else if (board[i][j].charAt(1)=='R'||board[i][j].charAt(1)=='P')OnlyKings=false;
 				else if(board[i][j].compareTo(" ") != 0 && board[i][j].compareTo("P") != 0){
 					
 					OnlyKings = false;
@@ -97,17 +96,14 @@ public class State implements Comparable<State>{
 				if(board[lastMove[2]][lastMove[3]].equals(" "))
 				{
 					sc_incr++;
-//					System.out.println("Out of board");
 				}
 			}
 			
 			if(father.getBoard()[lastMove[2]][lastMove[3]].equals("BP")){
 				sc_incr+=1;
-//				System.out.println("Killed pawn");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BR")){
 				sc_incr+=3;
-//				System.out.println("Killed rook");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("BK")){
 				if(absoluteScoreWhite+ 10 > absoluteScoreBlack){
@@ -118,11 +114,9 @@ public class State implements Comparable<State>{
 					
 					sc_incr -= 2000;
 				}
-//				System.out.println("Killed King");
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
 				sc_incr+=0.8;
-//				System.out.println("Got present on (" + lastMove[2] + "," + lastMove[3]);
 			}
 		
 		scoreWhite= father_score+sc_incr;
