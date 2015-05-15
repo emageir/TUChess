@@ -233,19 +233,31 @@ public class World
 		
 		move=possibleMoves.get(selection).getlastMove(); 
 		
+		
+		
+		} catch (IllegalArgumentException e1) {
+			
+			System.out.println("Rounding went wrong.");
+			
+			value = root.getChildren().get(0).getMinmaxValue();
+			int pos = 0;
+			
+			for(i = 1; i < root.getChildren().size(); i++){
+				
+				if(root.getChildren().get(i).getMinmaxValue() > value){
+					
+					value = root.getChildren().get(i).getMinmaxValue();
+					pos = i;
+				}
+			}
+			
+			move = root.getChildren().get(pos).getlastMove();
+		}
+		
 		System.out.print("My move: ");
 		changeRoot(move);
-		return move;} catch (IllegalArgumentException e1) {
-			// TODO Auto-generated catch block
-			System.out.println("Tried to find value " + value + " but children had values:");
-			
-			for(i = 0; i < root.getChildren().size(); i++){
-				
-				System.out.println(root.getChildren().get(i).getMinmaxValue());
-				
-			}
-		}
-		return null;
+		
+		return move;
 	}
 	
 	

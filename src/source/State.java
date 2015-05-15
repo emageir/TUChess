@@ -116,7 +116,7 @@ public class State implements Comparable<State>{
 				}
 				else{
 					
-					sc_incr -= 1000;
+					sc_incr -= 2000;
 				}
 //				System.out.println("Killed King");
 			}
@@ -157,7 +157,7 @@ public class State implements Comparable<State>{
 				}
 				else{
 					
-					sc_incr -= 1000;
+					sc_incr -= 2000;
 				}
 			}
 			else if (father.getBoard()[lastMove[2]][lastMove[3]].equals("P")){
