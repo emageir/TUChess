@@ -263,13 +263,13 @@ public class State implements Comparable<State>{
 			pawnStructB=DoubledB+IsolB+BlockB;
 			
 			
-			//if (myColor==0){//whites perspective
+			if (myColor==0){//whites perspective
 				
 				value=Math.abs(scoreWhite+whitePieces)-Math.abs(scoreBlack+blackPieces)-(float)0.5*(pawnStructW-pawnStructB);
-			//}
-			//else{//blacks perspective
-				//value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces)-(float)0.5*(pawnStructB-pawnStructW);
-			//}
+			}
+			else{//blacks perspective
+				value=Math.abs(scoreBlack+blackPieces)-Math.abs(scoreWhite+whitePieces)-(float)0.5*(pawnStructB-pawnStructW);
+			}
 		return value;
 	}
 	

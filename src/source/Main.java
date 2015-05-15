@@ -61,8 +61,8 @@ public class Main {
 					
 					if(playerColor == 0){
 						
-//						world.createTree(delay, treeDepth, 0, 0);
-						world.createFPTree(delay, treeDepth, 0, 0, branchFactor);
+						world.createTree(delay, treeDepth, 0, 0);
+//						world.createFPTree(delay, treeDepth, 0, 0, branchFactor);
 						moves = new int[4];
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
 						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
@@ -135,8 +135,8 @@ public class Main {
 						
 						//Emfanisthke dwro
 						if(prizeX != 9){ world.prizeAdded(prizeX, prizeY); }
-//						world.createTree(delay, treeDepth, scoreWhite, scoreBlack);
-						world.createFPTree(delay, treeDepth, 0, 0, branchFactor);
+						world.createTree(delay, treeDepth, scoreWhite, scoreBlack);
+//						world.createFPTree(delay, treeDepth, 0, 0, branchFactor);
 						moves = new int[4];
 						moves = Arrays.copyOf(world.selectMinimaxMove(), 4);
 						String action = Integer.toString(moves[0]) + Integer.toString(moves[1]) + Integer.toString(moves[2]) + Integer.toString(moves[3]);
