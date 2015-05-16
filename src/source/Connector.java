@@ -15,14 +15,16 @@ public class Connector {
 	private DatagramPacket sendPacket, receivePacket;
 	private byte[] sendData, receiveData;
 	String clientName;
+	String shortName;
 	
-	public Connector(int port, int packetSize, String clientName){
+	public Connector(int port, int packetSize, String clientName, String shortName){
 		
 		this.port = port;
 		this.packetSize = packetSize;
 		this.sendData = new byte[packetSize];
 		this.receiveData = new byte[packetSize];
 		this.clientName = clientName;
+		this.shortName = shortName;
 		
 		try{
 			
@@ -64,7 +66,7 @@ public class Connector {
 			clientSocket.receive(receivePacket);
 			
 			receivedMsg = new String(receivePacket.getData(), 0, receivePacket.getLength(), "UTF-8");
-			System.out.println(clientName + ": Received message from server: " + receivedMsg);
+//			System.out.println(shortName + ": Received message from server: " + receivedMsg);
 			
 		}
 		catch(IOException e){

@@ -4,7 +4,6 @@
 package source;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -23,8 +22,9 @@ public class World
 	ArrayList<State> fathers_list = null;
 	ArrayList<State> expand_list = new ArrayList<State>();
 	Random rand = new Random();
+	String shortName;
 	
-	public World(int delay)
+	public World(String shortName, int delay)
 	{
 		String[][] board = new String[rows][columns];
 		
@@ -84,6 +84,7 @@ public class World
 		expand_list.add(root);
 		
 		this.delay = delay;
+		this.shortName = shortName;
 		
 //		availableMoves = new ArrayList<String>();
 	}
@@ -106,8 +107,11 @@ public class World
 		
 		while(!expand_list.isEmpty() && (System.currentTimeMillis() - time < delay) && !depthReached){
 //		while(!expand_list.isEmpty() && !depthReached){
+			
+			//Pairnoume to 1o stoixeio ths listas me tous pros epektash komvous
 			toBeExpanded = expand_list.remove(0);
 			
+			//Vriskoume tis dynates kinhseis analogws me to xrwma aftou pou paizei
 			if(toBeExpanded.getlastPlayed() == 0){
 				
 				availableMoves = blackMoves(toBeExpanded.getBoard());
@@ -119,8 +123,13 @@ public class World
 			
 			for(i = 0; i < availableMoves.size(); i++){
 				
+				//Dhmiourgoume ton komvo-paidi tou parontos komvou
 				State child = new State(makeMove(toBeExpanded.getBoard(), availableMoves.get(i)), toBeExpanded, nextPlayer(toBeExpanded), availableMoves.get(i), myColor, toBeExpanded.getDepth() + 1, absoluteScoreWhite, absoluteScoreBlack);
+				
+				//Ton prosthetoume sth lista paidiwn
 				toBeExpanded.getChildren().add(child);
+				
+				//An den einai termatikos, ton prosthetoume sth lista me tous pros epektash komvous
 				if(!child.isTerminal()){
 					
 					expand_list.add(child);
@@ -169,7 +178,10 @@ public class World
 				
 			}
 			
-			if (toBeExpanded.getlastPlayed() == 1) {
+			//Taksinomoume th lista twn paidiwn analoga me to evaluation tous
+			//Otan paizoume emeis, taksinomoume apo to kalytero sto xeirotero
+			//Otan paizei o antipalos, apo to xeirotero sto kalytero
+			if (toBeExpanded.getlastPlayed() != myColor) {
 				java.util.Collections.sort(toBeSelected);
 			}
 			else{
@@ -178,6 +190,8 @@ public class World
 			}
 			i = 0;
 			
+			//Dialegoume tis kalyteres dynates kinhseis vasei tou branch factor kai tis 
+			//vazoume sth lista twn paidiwn
 			while(i < branchFactor && i < toBeSelected.size()){
 				
 				toBeExpanded.getChildren().add(toBeSelected.get(i));
@@ -207,7 +221,7 @@ public class World
 		ArrayList<State> possibleMoves = new ArrayList<State>();//Edw apothikevoume tis kinhseis me idio evaluation
 		
 		value = abPrunning(root, true, -Float.MAX_VALUE, Float.MAX_VALUE, 0);
-		System.out.println("value = " + value);
+		System.out.println(shortName + ": Move's evaluation = " + value);
 		
 		for(i=0;i<root.getChildren().size();i++){
 			if(root.getChildren().get(i).getMinmaxValue()==value && !root.getChildren().get(i).getIsPruned())
@@ -223,9 +237,9 @@ public class World
 		
 		
 		
-		} catch (IllegalArgumentException e1) {
+		} catch (IllegalArgumentException e1) {//Se periptwsh pou prokypsei anakriveia logw float, dialegoume to kalytero evaluation
 			
-			System.out.println("Rounding went wrong.");
+			System.out.println(shortName + ": Rounding went wrong.");
 			
 			value = root.getChildren().get(0).getMinmaxValue();
 			int pos = 0;
@@ -242,7 +256,7 @@ public class World
 			move = root.getChildren().get(pos).getlastMove();
 		}
 		
-		System.out.print("My move: ");
+		System.out.print(shortName + ": My move: ");
 		changeRoot(move);
 		
 		return move;
@@ -401,34 +415,18 @@ public class World
 	
 	public void changeRoot(int[] move){
 		
-		int i;
-		if(move.equals(null)){
-			System.out.println("ALERT");
-		}
 
-		for(i = 0; i < root.getChildren().size(); i++){
-			
-			if(Arrays.equals(move, root.getChildren().get(i).getlastMove())){
-				System.out.println("Changed root for move " + "(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
-				root = root.getChildren().get(i);
-				root.removeFather();
-				root.getChildren().clear(); 
-				root.clearScores();
-				expand_list.clear();
-				expand_list.add(root);
-
-				return;
-			}
-		}
-		
+		//Allazoume to root symfwna me thn kinhsh pou egine, diagrafoume to dentro kai ton patera tou root
+		//kai to prosthetoume sthn expand list
 		root.setBoard(makeMove(root.getBoard(), move));
 		root.getChildren().clear();
+		root.removeFather();
 		root.setlastPlayed(nextPlayer(root));
 		root.clearScores();
 		expand_list.clear();
 		expand_list.add(root);
 		
-		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")" + ": Panic mode forced root!");
+		System.out.println("(" + move[0] + "," + move[1] + ")->(" + move[2] + "," + move[3] + ")");
 	}
 	
  	private ArrayList<int[]> whiteMoves(String[][] board)
@@ -956,7 +954,7 @@ public class World
 		return newBoard;
 		}catch (StringIndexOutOfBoundsException e) {
 			
-			System.out.println("Tried to read from string \"" + board[moves[0]][moves[1]] + "\"");
+			System.out.println(shortName + ": Tried to read from string \"" + board[moves[0]][moves[1]] + "\"");
 			
 			e.printStackTrace();
 		}
@@ -965,10 +963,12 @@ public class World
 		
 	}
 	
+	//An emfanistei dwro, to prosthetoume sth skakiera (root), diagrafoume to dentro
+	//kai katharizoume thn expand list.
 	public void prizeAdded(int prizeX, int prizeY){
 		
 		expand_list.clear();
-		System.out.println("Dropped tree, added prize");
+		System.out.println(shortName + ": Added prize");
 		root.getBoard()[prizeX][prizeY] = "P";
 		root.getChildren().clear();
 		expand_list.add(root);
@@ -978,6 +978,7 @@ public class World
 		return myColor;
 	}
 	
+	//Epistrefei to poios einai o epomenos pou paizei se mia katastash - komvo
 	public int nextPlayer(State state){
 		
 		if(state.getlastPlayed() == 0){

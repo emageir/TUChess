@@ -12,15 +12,18 @@ public class Main {
 		int scoreBlack = 0;
 		boolean gotColor = false;
 		String playerName = "GrandMaster Flash";
+		String shortName = "GMF";
 		int delay = 4000;
 		int[] moves;
-		int treeDepth = 0;
+		int treeDepth = 0; //An treeDepth = 0, to dentro de stamataei se sygekrimeno vathos, alliws ftanei se vathos treeDepth + 1
 //		int branchFactor = 10;
 		
-		//Dhmiourgoume object gia th syndesh
- 		Connector conn = new Connector(9876, 200, playerName);
+		System.out.println(playerName + " Chess Engine\nAI Project 2015\nVangelis Mageiropoulos, Dimitris Bousias");
 		
-		World world = new World(delay);
+		//Dhmiourgoume object gia th syndesh
+ 		Connector conn = new Connector(9876, 200, playerName, shortName);
+		
+		World world = new World(shortName, delay);
 		
 		//Stelnoume to onoma sto server
 		conn.sendName();
@@ -35,14 +38,14 @@ public class Main {
 				
 				playerColor = 0;
 				gotColor = true;
-				System.out.println("I am white");
+				System.out.println(shortName + ": Playing as white");
 				world.setMyColor(playerColor);
 			}
 			else if(receivedData.substring(0, 2).compareToIgnoreCase("PB") == 0){
 				
 				playerColor = 1;
 				gotColor = true;
-				System.out.println("I am black");
+				System.out.println(shortName + ": Playing as black");
 				world.setMyColor(playerColor);
 			}
 			else if (gotColor){
@@ -72,26 +75,22 @@ public class Main {
 					if(scoreWhite - scoreBlack > 0)
 					{
 						if(playerColor == 0)
-							System.out.println("I won! " + scoreWhite + "-" + scoreBlack);
+							System.out.println(shortName + ": I won! " + scoreWhite + "-" + scoreBlack);
 						else
-							System.out.println("I lost. " + scoreWhite + "-" + scoreBlack);
-	
-						System.out.println("My average branch factor was : " + world.getAvgBFactor());
+							System.out.println(shortName + ": I lost. " + scoreWhite + "-" + scoreBlack);
 					}
 					else if(scoreWhite - scoreBlack < 0)
 					{
 						if(playerColor == 0)
-							System.out.println("I lost. " + scoreWhite + "-" + scoreBlack);
+							System.out.println(shortName + ": I lost. " + scoreWhite + "-" + scoreBlack);
 						else
-							System.out.println("I won! " + scoreWhite + "-" + scoreBlack);
+							System.out.println(shortName + ": I won! " + scoreWhite + "-" + scoreBlack);
 	
-						System.out.println("My average branch factor was : " + world.getAvgBFactor());
 					}
 					else
 					{
-						System.out.println("It is a draw! " + scoreWhite + "-" + scoreBlack);
+						System.out.println(shortName + ": It is a draw! " + scoreWhite + "-" + scoreBlack);
 	
-						System.out.println("My average branch factor was : " + world.getAvgBFactor());
 					}
 	
 					break;
@@ -119,11 +118,12 @@ public class Main {
 					
 					if(nextPlayer==playerColor)//Epaikse o antipalos, paizoume emeis
 					{
-						System.out.print("His move: ");
+						System.out.print(shortName + ": Opponent's move: ");
 						world.changeRoot(moves);
 						
-						//Emfanisthke dwro
+						//Emfanisthke dwro?
 						if(prizeX != 9){ world.prizeAdded(prizeX, prizeY); }
+						//Dhmiourgoume to dentro
 						world.createTree(delay, treeDepth, scoreWhite, scoreBlack);
 //						world.createFPTree(delay, treeDepth, 0, 0, branchFactor);
 						moves = new int[4];
@@ -133,7 +133,7 @@ public class Main {
 					}
 					else//Paizei o antipalos
 					{
-//						System.out.println();
+						//Emfanisthke dwro?
 						if(prizeX != 9){ world.prizeAdded(prizeX, prizeY); }
 						continue;
 					}				
@@ -141,7 +141,7 @@ public class Main {
 			}
 			else{
 				
-				System.out.println(playerName + ": Did not get a color assigned");
+				System.out.println(shortName + ": Error: Did not get a color assigned");
 				break;
 			}
 		}
