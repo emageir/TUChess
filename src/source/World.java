@@ -224,16 +224,16 @@ public class World
 		System.out.println(shortName + ": Move's evaluation = " + value);
 		
 		for(i=0;i<root.getChildren().size();i++){
-			if(root.getChildren().get(i).getMinmaxValue()==value && !root.getChildren().get(i).getIsPruned())
-			{ possibleMoves.add(root.getChildren().get(i)); }
+			if(root.getChildren().get(i).getMinmaxValue()==value && !root.getChildren().get(i).getIsPruned())// agnohse ta paidia pou exoun kladeytei
+			{ possibleMoves.add(root.getChildren().get(i)); } // an kapoio apo ta paidia sou exei thn timh tou minimaxValue dialexe ayto san epomeno state
 		}
 		
 		int selection;
 		try {
-			selection = rand.nextInt(possibleMoves.size());
+			selection = rand.nextInt(possibleMoves.size()); 
 		
 		
-		move=possibleMoves.get(selection).getlastMove(); 
+		move=possibleMoves.get(selection).getlastMove(); // an perisotero apo ena apo ta paidia sou exei thn timh tou minimaxValue dialexe kapoio sthn tyxh
 		
 		
 		
@@ -269,15 +269,15 @@ public class World
 		float bestVal=0;
 		int i=0;
 		
-		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();// termatikoi komvoi, fylla
 		
 		if (MaximizingPlayer){
 			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
 			
-			for(i=0;i<node.getChildren().size();i++){
+			for(i=0;i<node.getChildren().size();i++){// anazhthse ola ta paidia
 				
 				val=MiniMaxing(node.getChildren().get(i),false);
-				if (val>bestVal)bestVal=val;	
+				if (val>bestVal)bestVal=val;	//maximizing
 			}
 			
 		}
@@ -288,22 +288,22 @@ public class World
 			for(i=0;i<node.getChildren().size();i++){
 				
 				val=MiniMaxing(node.getChildren().get(i),true);
-				if (val<bestVal)  bestVal=val;
+				if (val<bestVal)  bestVal=val; //minimizing
 			}
 		}
 		
-		node.setMinmaxValue(bestVal);
+		node.setMinmaxValue(bestVal);// perase thn timh pou tha anevaseis ws orisma ston komvo
 		return bestVal;
 		
 	}
 	
 	@SuppressWarnings("unused")
-	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer){
+	private float MiniMaxing(int depth,State node,boolean MaximizingPlayer){//idia me  thn parapanw apla gia depth limited search
 		float val=0;
 		float bestVal=0;
 		int i=0;
 		
-		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();
+		if (depth==0||node.getChildren().isEmpty() || node.isTerminal()) return node.getEvaluation();// termatikoi komvoi, fylla , h epithymito vathos
 		
 		if (MaximizingPlayer){
 			bestVal=Integer.MIN_VALUE;// praktika meiwn apeiro
@@ -340,7 +340,7 @@ public class World
 		if (node.getChildren().isEmpty() || node.isTerminal()) {
 			
 			node.setMinmaxValue(((10 - percentage) / 10) * node.getEvaluation());
-			return ((10 - percentage) / 10) * node.getEvaluation();
+			return ((10 - percentage) / 10) * node.getEvaluation(); // posostiaia apeikonhsh ths axiologhshs
 		}
 		if (MaximizingPlayer){
 			
@@ -353,7 +353,7 @@ public class World
 				if (b<=a){
 					
 					node.setIsPruned(true);
-					break;
+					break;// an isxyei h anisothta den xreiazetai na psaxeis perisotera paidia. kladepse ta
 				}
 			}
 		}
@@ -367,19 +367,19 @@ public class World
 				if (b<=a){
 					
 					node.setIsPruned(true);
-					break;
+					break; // an isxyei h anisothta den xreiazetai na psaxeis perisotera paidia. kladepse ta
 				}
 			}
 			
 		}
 
-		node.setMinmaxValue(((10 - percentage) / 10) * val);
+		node.setMinmaxValue(((10 - percentage) / 10) * val);// posostiaia apeikonhsh ths axiologhshs
 		return ((10 - percentage) / 10) * val ;
 	}
 
 	
 	@SuppressWarnings("unused")
-	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){
+	private float abPrunning(int depth,State node,boolean MaximizingPlayer,float a, float b){//idia me  thn parapanw apla gia depth limited search
 		float val=0;
 		int i=0;
 		
